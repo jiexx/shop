@@ -1,0 +1,4 @@
+{
+    "user": { "sql": "select a.*,b.PERMISSION from  wflow.users  a inner join wflow.jobs b on (a.JOB=b.JOB) AND a.USERNAME=?  ;", "params": ["username"] },
+    "userpwd": { "sql": "select a.*,b.PERMISSION from  wflow.users  a inner join wflow.jobs b on (a.JOB=b.JOB) AND a.USERNAME=? AND a.USERPWD=? ;", "params": ["username","userpwd"]}
+}

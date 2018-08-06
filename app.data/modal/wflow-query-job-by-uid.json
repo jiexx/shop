@@ -1,0 +1,4 @@
+{
+  "result": {"sql": "SELECT job FROM wflow.users WHERE id = ? ;","params":["userid"]
+  }
+}

@@ -1,0 +1,4 @@
+{
+    "users": { "sql": "select * from  wflow.users where USERNAME=?", "params": ["username"] }
+
+}

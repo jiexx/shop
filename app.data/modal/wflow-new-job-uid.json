@@ -1,0 +1,4 @@
+{
+  "result": {"sql": "INSERT INTO wflow.user_job(job, userid)VALUES(?, ?) ;","params":["job","userid"]
+  }
+}

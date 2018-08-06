@@ -1,0 +1,6 @@
+{
+    "jobs": {
+        "sql": "DELETE FROM wflow.jobs WHERE id = ?;",
+        "params": ["id"]
+    }
+}

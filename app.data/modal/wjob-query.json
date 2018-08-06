@@ -1,0 +1,4 @@
+{
+    "jobs": { "sql": "SELECT * FROM wflow.jobs ORDER BY id DESC  LIMIT n?, 20;", "params": ["pgidx"] },
+    "pg": { "sql": "SELECT ceil(count(*)/20) as cnt, count(*) as total FROM wflow.jobs;", "params": [] }
+}

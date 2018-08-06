@@ -1,0 +1,4 @@
+{
+  "result": {"sql": "UPDATE wflow.user_job SET job=?  WHERE userid = ? ;","params":["job","userid"]
+  }
+}

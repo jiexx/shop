@@ -1,0 +1,6 @@
+{
+    "newuser": {
+        "sql": "INSERT INTO wflow.users(username,userpwd,employeename,department,job,email,tel,status,sex,logincount)VALUES(?,?,?,?,?,?,?,?,?,'0');",
+        "params": ["username", "userpwd", "employeename", "department", "job", "email", "tel", "status", "sex"]
+    }
+}

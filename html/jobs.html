@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<!-- <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"> -->
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>职位设置</title>
+
+    <!-- jquery-ui CSS -->
+    <link rel="stylesheet" type="text/css" href="../lib/jqGrid/css/jquery-ui.css">
+
+    <!-- Bootstrap core CSS -->
+    <!-- link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"-->
+
+    <!-- standard jqGrid CSS -->
+    <link rel="stylesheet" type="text/css" href="../lib/jqGrid/css/ui.jqgrid.css">
+
+    <!-- jqGrid CCS override -->
+    <link rel="stylesheet" type="text/css" href="../lib/jqGrid/css/jqGrid.bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="../lib/jqGrid/js/jsoneditor.css">
+	<!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <script src="../lib/jqGrid/js/jquery-1.11.3.min.js"></script>
+    <script src="../lib/jqGrid/js/jquery-ui.js"></script>
+    <!-- jqGrid -->
+    <script src="../lib/jqGrid/js/i18n/grid.locale-cn.js"></script>
+    <script src="../lib/jqGrid/js/jquery.jqGrid.src.js"></script>
+    <script src="../lib/jqGrid/js/grid.js"></script>
+    <script src="../lib/jqGrid/js/jsoneditor.js"></script>
+    <script src="../lib/defaultAuth.js"></script>
+	
+	<script src="ipconfig.js"></script>
+	
+    <style>
+        #editmodjqGrid01,
+        #jsoneditor {
+            padding-top: 8px;
+            width: 460px;
+            margin: 0 auto;
+            height: 500px;
+            overflow: hidden;
+        }
+        
+        body {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 80px;
+        }
+        
+        .content {
+            width: 100%;
+            height: 100%;
+        }
+        
+        .btn_wrap {
+            margin: 20px auto;
+            text-align: center;
+        }
+        
+        .btn {
+            background: #3883fa;
+            display: inline-block;
+            width: 50px;
+            height: 30px;
+            border: 1px #3883fa solid;
+            color: #fff;
+            border-radius: 3px;
+        }
+        /* .jsoneditor-menu {
+            display: none !important
+        } */
+        /* .jsoneditor-navigation-bar {
+            display: none !important
+        } */
+        
+        .jsoneditor {
+            border: none !important
+        }
+        
+        .ui-search-toolbar {
+            display: none !important
+        }
+        
+        tr {
+            line-height: 28px;
+        }
+        
+        td {
+            text-align: center !important;
+        }
+    </style>
+
+    
+
+
+</head>
+
+<body>
+    <div class="content">
+        <table id="jqGrid01"></table>
+        <div id="jqGridPager01"></div>
+        <div id="mainbox" style="display:none;position:absolute;top:2%;z-index:99999;width:500px;height:500px;overflow-y:auto;background:#fff;border-radius:5px;box-shadow:1px 1px 10px #ccc;border:1px #ccc solid;">
+            <div id="rowbox"></div>
+            <!-- <div id="jsoneditor"></div> -->
+            <!-- <div class="btn_wrap">
+                <button type="button" class="btn" id="cancleBtn">取消</button>
+                <button type="button" class="btn" id="comfirmBtn">确认</button>
+            </div> -->
+        </div>
+    </div>
+    <!-- /.container -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery -->
+
+    <script>
+        var editor;
+        var stack1;
+        $(document).ready(function() {
+
+
+            var result = {};
+            var stack = [];
+
+            var arr = {};
+            var obj;
+            var obj1;
+
+            var SG = SelfGrid.create('角色管理', '#jqGrid01', "#jqGridPager01", ['角色ID', '角色简称', '角色', '权限'], [{
+                    name: 'ID',
+                    editable: false,
+                    width: 35,
+                    sortable: true
+                }, {
+                    name: 'JOB',
+                    editable: true,
+                    width: 200,
+                    sortable: true,
+                    editrules: {
+                        edithidden: true,
+                        custom: true,
+                        custom_func: function(value, colNames) {
+                            if (!(/^[A-Z0-9]+$/.test(value))) {
+                                return [false, "角色简称需要角色的首拼，且为大写字母!"];
+                            } else {
+                                return [true, ""];
+                            }
+                        }
+                    }
+                }, {
+                    name: 'JOBDESC',
+                    editable: true,
+                    width: 200,
+                    sortable: true
+                }, {
+                    name: 'PERMISSION',
+                    editable: true,
+                    width: 200,
+                    hidden: true,
+                    sortable: true,
+
+                    //datatype: 'json',
+                    editrules: {
+                        edithidden: true
+                    }
+                }],
+                function(page_index) {
+                    $.ajax({
+                        url: "http://" + $.WFHOST + "/wjob/query?pgidx=" + page_index + "&version=2",
+                        success: function(result) {
+                            // console.log('result:  ' + result);
+                            var r = JSON.parse(result);
+                            console.log(r.jobs);
+                            for (var i = 0; i < r.jobs.length; i++) {
+                                r.jobs[i].PERMISSION = JSON.stringify(r.jobs[i].PERMISSION);
+                                // console.log(JSON.stringify(r.jobs[i].PERMISSION));
+                            }
+
+                            if (r && r.jobs) {
+                                SG.load(r.jobs, r.pg.cnt, r.pg.total);
+                                //  SG.go();
+                            }
+                        },
+                        error: function() {
+                            alert('获取失败');
+                        }
+                    });
+                },
+                function(postdata) { //add
+                    var doubleData = {
+                        "job": postdata.JOB,
+                    };
+                    $.ajax({ //验证角色是否重复
+                        url: "http://" + $.WFHOST + "/wjob/querydouble",
+                        type: 'GET',
+                        data: doubleData,
+                        success: function(result) {
+                            var r = JSON.parse(result);
+
+                            if (r.jobs.length != 0) {
+                                SG.go();
+                                alert('角色重复!');
+                            } else {
+                                addJOB(postdata);
+                            }
+                        },
+                        error: function() {
+                            alert('添加失败');
+                        }
+                    });
+
+                    function addJOB(postdata) {
+                        var data = {
+                            job: postdata.JOB,
+                            jobdesc: postdata.JOBDESC,
+                            permission: JSON.stringify($.DEFAULTAUTH),
+                            version: 2
+                        };
+
+                        $.ajax({
+                            type: 'POST',
+                            dataType: 'json',
+                            data: data,
+                            url: "http://" + $.WFHOST + "/wjob/new",
+                            success: function(result) {
+                                var r = (result);
+                                if (r && r.jobs.affectedRows == 1) {
+                                    SG.go();
+                                    alert('添加成功');
+                                }
+                            },
+                            error: function() {
+                                alert('添加失败');
+                            }
+                        });
+                    }
+
+                },
+                function(postdata) { //delete
+                    $.ajax({
+                        dataType: 'json',
+                        url: "http://" + $.WFHOST + "/wjob/delete?id=" + postdata.ID + "&version=2",
+                        success: function(result) {
+                            var r = (result);
+                            if (r && r.jobs.affectedRows == 1) {
+                                SG.go();
+                                alert('删除成功');
+                            }
+                        },
+                        error: function() {
+                            alert('删除失败');
+                        }
+                    });
+                },
+                function(postdata) { //update
+                    console.log("obj1:" + editor.get());
+                    var data2 = {
+                        job: postdata.JOB,
+                        jobdesc: postdata.JOBDESC,
+                        permission: JSON.stringify(editor.get()), //将中文转化为英文
+                        jobid: postdata.ID,
+                    };
+                    $.ajax({
+                        url: "http://" + $.WFHOST + "/wjob/update",
+                        type: 'POST',
+                        data: data2,
+                        success: function(result) {
+                            var r = JSON.parse(result);
+                            if (r && r.jobs.affectedRows == 1) {
+                                SG.go();
+                                alert('更新成功');
+
+                                $('#mainbox').hide(); //弹框隐藏
+                            }
+                        },
+                        error: function() {
+                            alert('更新失败');
+                        }
+                    });
+                },
+                function(form) { //before update
+                    console.log('form', form);
+                    var data = form.find('#PERMISSION').val();
+                    $('#jsoneditor').remove();
+                    var btn = document.createElement("div");
+                    btn.id = 'jsoneditor';
+                    $('#FrmGrid_jqGrid01').append(btn);
+                    var container = document.getElementById('jsoneditor');
+                    var options = {
+                        mode: 'tree',
+                        navigationBar: true
+                    };
+
+                    var json = JSON.parse(data);
+                    console.log("getJson:" + JSON.stringify(json));
+                    editor = new JSONEditor(container, options);
+                    console.log(JSON.stringify(json));
+                    editor.set(json);
+                },
+                function(form) { //before add
+                    console.log('form: ' + JSON.stringify(form));
+
+                    $('#jsoneditor').remove();
+                    var btn = document.createElement("div");
+                    btn.id = 'jsoneditor';
+                    $('#FrmGrid_jqGrid01').append(btn);
+                    var container = document.getElementById('jsoneditor');
+                    var options = {
+                        mode: 'tree',
+                        navigationBar: true
+                    };
+                    //  var json = JSON.parse(data);
+                    editor = new JSONEditor(container, options);
+                    editor.set($.DEFAULTAUTH);
+                }
+            );
+            SG.go();
+        });
+
+        function getPattern(obj) {
+            //var json = { "现场管理子栏目": { "闸机管理子栏目": { "新增": true, "查看": true, "待授权": true, "修改": true, "删除": true }, "闸机管理": true, "商户管理子栏目": { "新增": true, "查看": true, "待授权": true, "修改": true, "删除": true }, "商户管理": true, "终端管理子栏目": { "新增": true, "查看": true, "修改": true, "删除": true }, "终端管理": true, "场馆管理子栏目": { "新增": true, "查看": true, "修改": true, "删除": true }, "场馆管理": true }, "现场管理": true }
+            return obj;
+        }
+        var rmapp = {
+
+            '添加': 'add',
+            '删除': 'del',
+            '修改': 'modify',
+            '推广': 'spread',
+            '授权': 'auth',
+            '退票': 'refund',
+            '打印小票': 'sale',
+            '售票': 'sale',
+            '查询': 'get',
+            '商品种类管理': 'producttype',
+            '查看': 'view',
+            '下载': 'download'
+        };
+    </script>
+
+
+</body>
+
+</html

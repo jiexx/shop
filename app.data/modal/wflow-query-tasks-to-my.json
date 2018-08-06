@@ -1,0 +1,4 @@
+{
+    "tomy": {"sql": " SELECT t.*, o.EMPLOYEENAME as ORIG, j.JOBDESC as CURRJOBDESC, u.EMPLOYEENAME, f.DETAIL FROM  wflow.tasks t  LEFT JOIN wflow.jobs j ON t.currjob=j.JOB LEFT JOIN wflow.flows f ON t.typeop= f.TYPEOP LEFT JOIN wflow.users u ON t.currjob = u.job LEFT JOIN wflow.users o ON o.ID = t.USERID WHERE  u.id =? AND t.STATE !='END' ORDER BY t.id DESC LIMIT n?, 10;","params":["userid","pgidx"]},
+    "pg": {"sql": "SELECT ceil(count(*)/10) as cnt, count(*) as total FROM  wflow.tasks t  LEFT JOIN wflow.jobs j ON t.currjob=j.JOB LEFT JOIN wflow.flows f ON t.typeop= f.TYPEOP LEFT JOIN wflow.users u ON t.currjob = u.job  WHERE  u.id = ? AND t.STATE !='END';","params":["userid"]}
+}

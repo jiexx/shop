@@ -1,0 +1,6 @@
+{
+    "jobs": {
+        "sql": "UPDATE wflow.jobs SET job = ? , jobdesc = ? , permission=? WHERE id = ?;",
+        "params": ["job", "jobdesc", "permission", "jobid"]
+    }
+}

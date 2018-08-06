@@ -1,0 +1,6 @@
+{
+    "roles": {
+        "sql": "UPDATE wflow.jobs SET permission = ?  WHERE job = ?;",
+        "params": ["permission", "job"]
+    }
+}

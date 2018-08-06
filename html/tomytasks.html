@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="icon" href="../../favicon.ico">
+
+    <title>待我审批</title>
+
+    <!-- jquery-ui CSS -->
+    <link rel="stylesheet" href="jqGrid/css/jquery-ui.css">
+
+    <!-- Bootstrap core CSS -->
+    <!-- link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"-->
+
+    <!-- standard jqGrid CSS -->
+    <link rel="stylesheet" href="jqGrid/css/ui.jqgrid.css">
+
+    <!-- jqGrid CCS override -->
+    <link rel="stylesheet" href="jqGrid.bootstrap.css">
+
+    <style>
+        body {
+            padding-left: 20px;
+            padding-right: 20px;
+            padding-top: 80px;
+        }
+        
+        .content {
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+
+    <!-- HTML5 shim and Respond.js for IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+</head>
+
+<body>
+    <div class="content">
+        <table id="jqGrid01"></table>
+        <div id="jqGridPager01"></div>
+    </div>
+    <!-- /.container -->
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <!-- jQuery -->
+    <script src="jqGrid/js/jquery-1.11.3.min.js"></script>
+    <script src="jqGrid/js/jquery-ui.js"></script>
+    <!-- jqGrid -->
+    <script src="jqGrid/js/i18n/grid.locale-cn.js"></script>
+    <script src="jqGrid/js/jquery.jqGrid.src.js"></script>
+    <script src="jqGrid/js/grid.js"></script>
+    <script src="jqGrid/js/translator.js"></script>
+    <script src="ipconfig.js"></script>
+    <script>
+        $(document).ready(function() {
+            function permit(cellValue, options, rowdata, action) {
+                return '<a class="ui-button ui-button-text-only ui-widget ui-state-default ui-corner-all" href="javascript:void(0)" data-val="' + rowdata.ID + '" id="approveBtn"><span class="ui-button-text">批准</span></a>'
+            };
+
+            function detail(cellValue, options, rowdata, action) {
+                var href = '<a href="javascript:void(0)" onclick="$.translate_detail(' + rowdata.OBJID + ',\'' + rowdata.TYPEOP + '\')" target="_blank">查看</a>';
+                return '<a href="javascript:void(0)" onclick="$.translate_detail(' + rowdata.OBJID + ',\'' + rowdata.TYPEOP + '\')" target="_blank">查看</a>'
+            };
+            var SG = SelfGrid.create('待我审批', '#jqGrid01', "#jqGridPager01", ['审批ID', '操作类型', '发起人', '审批人', '时间', '详情', '待审批'], [{
+                    name: 'ID',
+                    editable: false,
+                    width: 30,
+                    sortable: true
+                }, {
+                    name: 'DETAIL',
+                    editable: false,
+                    width: 80,
+                    sortable: true
+                }, {
+                    name: 'ORIG',
+                    editable: false,
+                    width: 80,
+                    sortable: true
+                }, {
+                    name: 'EMPLOYEENAME',
+                    editable: false,
+                    width: 80,
+                    sortable: true
+                }, {
+                    name: 'CREATETIME',
+                    editable: false,
+                    width: 80,
+                    sortable: true
+                }, {
+                    name: 'OBJID',
+                    editable: false,
+                    width: 20,
+                    sortable: false,
+                    formatter: detail
+                }, {
+                    name: 'ID',
+                    editable: false,
+                    width: 30,
+                    sortable: false,
+                    formatter: permit
+                }],
+                function(page_index) {
+                    refresh(page_index, $.query_string('userid'))
+                }
+            );
+
+            function refresh(page_index, userid) {
+                $.ajax({
+                    url: "http://" + $.WFHOST + "/wflow/query/tasks/to/my?pgidx=" + page_index + "&userid=" + userid + "&version=2",
+                    success: function(result) {
+                        var r = JSON.parse(result);
+                        if (r.tomy instanceof Array) {
+                            SG.load(r.tomy, r.pg.cnt, r.pg.total);
+                        } else if (r.tomy instanceof Object) {
+                            SG.load([r.tomy], r.pg.cnt, r.pg.total);
+                        }
+                    },
+                    error: function() {}
+                });
+            }
+
+            function approve(taskid) {
+                $.ajax({
+                    url: 'http://' + $.WFHOST + '/wf/approve?taskid=' + taskid,
+                    success: function(result) {
+                        var r = JSON.parse(result);
+                        if (r && r.code == "success_approve" && r.res.end.affectedRows == 1) {
+                            refresh(0, $.query_string('userid'));
+                        } else if (r && r.code == "end_approve" && r.res.end.affectedRows == 1) {
+                            alert("审批单号:" + taskid + ",已结束");
+                            refresh(0, $.query_string('userid'));
+                        }
+                    },
+                    error: function() {}
+                });
+            }
+            $('body').on('click', '#approveBtn', function() {
+                var id = $(this).attr('data-val');
+                approve(id);
+            })
+            SG.go();
+        });
+    </script>
+
+
+</body>
+
+</html>

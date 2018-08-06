@@ -1,0 +1,4 @@
+{
+  "end": {"sql": "UPDATE wflow.tasks SET state = 'END' WHERE id = ?;","params":["taskid"]},
+  "data": {"sql": "SELECT * FROM wflow.tasks WHERE id = ?;","params":["taskid"]}
+}

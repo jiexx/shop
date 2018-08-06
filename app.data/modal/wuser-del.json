@@ -1,0 +1,6 @@
+{
+    "deluser": {
+        "sql": "delete  from wflow.users  where ID=?",
+        "params": ["id"]
+    }
+}

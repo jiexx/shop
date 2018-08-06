@@ -1,0 +1,6 @@
+{
+    "jobs": {
+        "sql": "INSERT INTO wflow.jobs(job,jobdesc,permission)VALUES(?,?,?);",
+        "params": ["job", "jobdesc", "permission"]
+    }
+}

@@ -1,0 +1,6 @@
+{
+    "agency": {
+        "sql": "delete  from travel.AGENCY where ID=?",
+        "params": ["id"]
+    }
+}

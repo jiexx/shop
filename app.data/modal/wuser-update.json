@@ -1,0 +1,7 @@
+{
+    "updateuser": {
+        "sql": "update wflow.users  set USERNAME=?,EMPLOYEENAME=?,DEPARTMENT=?,JOB=?,EMAIL=?,TEL=?,status=?,SEX=? where ID=?",
+        "params": ["username", "employeename", "department", "job", "email", "tel", "status", "sex", "id"]
+    }
+
+}

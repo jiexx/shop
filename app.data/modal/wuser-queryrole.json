@@ -1,0 +1,4 @@
+{
+    "jobs": { "sql": "SELECT JOB,JOBDESC FROM wflow.jobs " }
+
+}

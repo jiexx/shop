@@ -1,0 +1,4 @@
+{
+  "end": {"sql": "UPDATE wflow.tasks SET currjob = ? WHERE id = ?;","params":["currjob","taskid"]
+  }
+}

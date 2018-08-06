@@ -1,0 +1,4 @@
+{
+    "jobs": { "sql": "select * from  wflow.jobs where JOB=?", "params": ["job"] }
+
+}
