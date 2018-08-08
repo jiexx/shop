@@ -1,9 +1,10 @@
 var CSV = require("./csv");
 var DB = require("./db");
+var config = require('../config');
 
 var Data = /** @class */ (function () {
     function Data() {
-        this.$db = new DB();
+        this.$db = new DB(config.DB1, config.DB2);
         this.csv = {};
         this.csv['FLOWS'] = new CSV('./app.data/csv/flows.csv');
     };
@@ -15,4 +16,4 @@ var Data = /** @class */ (function () {
     };
     return Data;
 }());
-module.exports = Data;
+module.exports = new Data();

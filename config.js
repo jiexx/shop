@@ -5,6 +5,8 @@
  exports.DATA_HOST = "192.168.1.38"; //"114.55.139.196";
  exports.DBUSER = "root";
  exports.DBPWD = "yw@123$%^";
+ exports.DB1 = "shop1";
+ exports.DB2 = "shop2";
  exports.ADDRESS = "taut.happyworlds.cn";
  exports.PORT = 8999;
  exports.FDFS = {
