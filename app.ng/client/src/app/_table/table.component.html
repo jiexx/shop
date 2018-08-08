@@ -1,0 +1,42 @@
+﻿<div class="col-md-6 col-md-offset-3">
+    <h2>Login</h2>
+
+    <div class="btn-group">
+        <a href="#" class="btn btn-primary">添加</a>
+        <a href="#" class="btn btn-primary">删除</a>
+        <a href="#" class="btn btn-primary">修改</a>
+    </div>
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <ng-container *ngFor="let col of cols">
+                    <th scope="col" *ngIf="col.visible">{{col.name}}</th>
+                </ng-container>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of model" (click)="onContainerClicked(row)">
+                <ng-container *ngFor="let cell of row; let i = index">
+                    <td *ngIf="cols[i].visible">{{cell}}</th>
+                </ng-container>
+            </tr>
+        </tbody>
+    </table>
+    <div class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}" [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <ng-content select=".app-modal-header"></ng-content>
+                </div>
+                <div class="modal-body">
+                    <ng-content select=".app-modal-body"></ng-content>
+                </div>
+                <div class="modal-footer">
+                    <ng-content select=".app-modal-footer"></ng-content>
+                </div>
+            </div>
+        </div>
+    </div>
+    <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
+    />
+</div>
