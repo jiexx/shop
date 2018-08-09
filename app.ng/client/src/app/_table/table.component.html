@@ -15,24 +15,26 @@
             </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let row of model" (click)="onContainerClicked(row)">
+            <tr *ngFor="let row of model; let j = index" (click)="onContainerClicked(row)">
                 <ng-container *ngFor="let cell of row; let i = index">
                     <td *ngIf="cols[i].visible">{{cell}}</th>
                 </ng-container>
             </tr>
         </tbody>
     </table>
+    <ul class="meal-list">
+        <li *ngFor="let meal of meals | paginate: { itemsPerPage: 10, currentPage: page }">
+            {{ meal }}
+        </li>
+    </ul>
+    <div class="has-text-centered">
+        <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    </div>
     <div class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}" [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
         <div class="modal-dialog">
             <div class="modal-content">
-                <div class="modal-header">
-                    <ng-content select=".app-modal-header"></ng-content>
-                </div>
-                <div class="modal-body">
-                    <ng-content select=".app-modal-body"></ng-content>
-                </div>
-                <div class="modal-footer">
-                    <ng-content select=".app-modal-footer"></ng-content>
+                <div class="input-group" *ngFor="let col of cols; let i = index">
+                    <input type="text" class="form-control" value="{{row[i]}}"/>
                 </div>
             </div>
         </div>

@@ -1,16 +1,21 @@
-﻿import { Component, OnInit } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { BusService } from '../_services/bus';
 import { Column } from './column';
 
 @Component({
-    templateUrl: 'table.component.html'
+    templateUrl: 'table.component.html',
+    changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class TableComponent implements OnInit {
+    @Input('data') meals: string[] = [];
+    page: number = 1;
+
     model: any = {};
     cols: Array<Column>;
+    row: Array<any>;
     loading = false;
     returnUrl: string;
 
@@ -28,6 +33,7 @@ export class TableComponent implements OnInit {
     }
 
     public onContainerClicked(row:any): void {
+        this.row = row;
         if(this.visible)
             this.hide();
         else
@@ -48,7 +54,7 @@ export class TableComponent implements OnInit {
     load(url: string, cols: Array<Column>) {
         this.loading = true;
         this.cols = cols;
-        this.http.get<any>(url).subscribe(data => {
+        this.http.get<any>(url+'&page='+(this.page-1)).subscribe(data => {
             this.loading = false;
             if (data instanceof Array && data.length > 0 && data[0]) {
                 this.model = data;
