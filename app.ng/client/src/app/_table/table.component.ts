@@ -42,6 +42,7 @@ export class TableComponent implements OnInit {
 
     constructor(
         private route: ActivatedRoute,
+        private router: Router,
         private http: HttpClient,
         private busService: BusService) { }
 
@@ -49,11 +50,13 @@ export class TableComponent implements OnInit {
 
         // get return url from route parameters or default to '/'
         this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
+        this.router.navigate(['Welcome']);
     }
 
     load(url: string, cols: Array<Column>) {
         this.loading = true;
         this.cols = cols;
+        
         this.http.get<any>(url+'&page='+(this.page-1)).subscribe(data => {
             this.loading = false;
             if (data instanceof Array && data.length > 0 && data[0]) {
