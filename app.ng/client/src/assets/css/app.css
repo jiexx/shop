@@ -1,0 +1,18 @@
+
+
+
+* {
+font-size: 0.9rem  !important;
+}
+
+body {
+ background-color: #eee;
+ font-family: "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Microsoft YaHei", sans-serif;
+}
+
+[class^="dropdown-menu"],[class*="dropdown-menu"] {
+left:auto !important;
+}
+
+
+

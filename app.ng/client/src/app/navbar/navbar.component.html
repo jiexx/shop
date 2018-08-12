@@ -1,0 +1,47 @@
+﻿<nav class="navbar navbar-dark bg-primary navbar-expand">
+  <a class="navbar-brand" href="#">
+    <em class="glyphicon glyphicon-fire text-danger nav-link"></em>管理后台
+  </a>
+  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="navbar-collapse collapse" id="navbarNavDropdown">
+    <ul class="nav navbar-nav mr-auto">
+      <li class="nav-item" *ngIf="navbar.user">
+        <a href="javascript:void(0)" (click)="onClick('user')">
+          <div class="btn btn-primary text-center" *ngIf="navbar.user.avatar">
+            <img class="avator" src="{{user.avatar}}">
+          </div>
+          <div class="btn btn-primary text-center" *ngIf="!navbar.user.avatar">
+            <em class="glyphicon glyphicon-user "></em>
+          </div>
+        </a>
+      </li>
+      <li class="nav-item" dropdown>
+        <div dropdownToggle class="btn btn-primary dropdown-toggle">
+          <em class="glyphicon glyphicon-bell"></em>
+        </div>
+        <ul *dropdownMenu class="dropdown-menu" >
+          <li *ngFor="let menu of navbar.menus; let j = index">
+            
+            <a class="dropdown-item" href="javascript:void(0)" (click)="onClick(menu.target)">
+              <span>{{menu.name}}</span>
+            </a>
+          </li>
+        </ul>
+      </li>
+    </ul>
+
+    <form class="form-inline">
+      <input class="form-control mr-sm-2" type="text" [(ngModel)]="login.username" name="username" placeholder="用户名">
+      <input class="form-control mr-sm-2" type="text" [(ngModel)]="login.password" name="password" placeholder="密码">
+      <button class="btn btn-outline-light" type="submit">登录</button>
+    </form>
+    <span class="navbar-text">
+      <a href="javascript:void(0)" class="nav-link">
+        <em class="glyphicon glyphicon-share"></em>
+      </a>
+    </span>
+  </div>
+</nav>

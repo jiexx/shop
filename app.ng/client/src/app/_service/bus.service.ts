@@ -1,7 +1,7 @@
 ﻿import { Injectable } from '@angular/core';
 import { Router, NavigationStart } from '@angular/router';
-import { Observable } from 'rxjs';
-import { Subject } from 'rxjs/Subject';
+import { Observable, Subject } from 'rxjs';
+import { Message } from './message';
 
 @Injectable()
 export class BusService {
@@ -23,19 +23,21 @@ export class BusService {
         });
     }
 
-    send(message: any) {
+    getObservable(): Observable<any> {
+        return this.subject.asObservable();
+    }
+
+    send(message: Message) {
         this.subject.next(message);
     }
 
-    receive(that: any) {
-        return new Promise((resolve, reject) => {
-            this.subject.asObservable().subscribe(message => {
-                if(message.to == that.constructor.name) {
-                    resolve(message);
-                }else{
-                    reject();
-                }
-            });
-        });
+    receive(that: any, callback) {
+            if(that && that.busService) {
+                return that.busService.getObservable().subscribe(message => {
+                    if(message && message.to == that.constructor.name) {
+                        callback(message);
+                    }
+                });
+            }
     }
 }
