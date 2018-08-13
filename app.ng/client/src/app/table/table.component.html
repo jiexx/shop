@@ -14,6 +14,7 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{model.toString()}}
                     <tr *ngFor="let row of model; let j = index" (click)="onContainerClicked(row)">
                         <ng-container *ngFor="let cell of row | keyvalue; let i = index">
                             <td *ngIf="cols[i].visible">{{cell.value}}</td>

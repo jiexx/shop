@@ -42,7 +42,7 @@ var Workflow = /** @class */ (function () {
 				}
 			});
     };
-    Workflow.prototype.$getDefaultAuth = function () {
+    Workflow.prototype.$getDefaultAuth = function (req, res) {
         var leaves = traverse(defaultAuth).reduce(function (acc, x) {
 			if (this.isLeaf) {
 				var parent = this.parent;
@@ -68,7 +68,7 @@ var Workflow = /** @class */ (function () {
 		
 		res.send(JSON.stringify(leaves));
     };
-    Workflow.prototype.$approve = function () {
+    Workflow.prototype.$approve = function (req, res) {
         var taskid = req.query.taskid;
 		var typeop = req.query.typeop;
 		var objid = req.query.objid;

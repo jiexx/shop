@@ -14,7 +14,7 @@ export class TableComponent implements OnInit, DclComponent {
     total = 175;
     page = 1;
 
-    model: any = {};
+    model: any = [];
     cols: Array<Column>;
     row: Array<any>;
     loading = false;
@@ -54,14 +54,7 @@ export class TableComponent implements OnInit, DclComponent {
     }
 
     load(d: any) {
-        this.loading = true;
         this.cols = d.cols;
-        
-        this.http.get<any>(d.url+'&page='+(this.page-1)).subscribe(data => {
-            this.loading = false;
-            if (data instanceof Array && data.length > 0 && data[0]) {
-                this.model = data;
-            }
-        });
+        return this.http.get<any>(d.url+'?version=2&pgidx='+(this.page-1));
     }
 }

@@ -40,6 +40,6 @@ export class NavbarComponent implements OnInit {
     }
 
     onClick(target: Type<any>) {
-        this.busService.send(new DclWrapperMessage(this,'ContentWrapper',ProductTable,null));
+        this.busService.send(new DclWrapperMessage(this,'ContentWrapper',target,null));
     }
 }

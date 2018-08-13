@@ -19,19 +19,19 @@ var Web = /** @class */ (function () {
         });
     };
     Web.prototype._accept = function (component) {
-        for (var m in component) {
+        for (let m in component) {
             if (m[0] == '$'){
-				var com = component[m];
+				let com = component[m];
 			    if(typeof com === 'function') {
 					console.log(('/'+component.constructor.name + '/' + m.substr(1,m.length)).toLowerCase());
 					this._app.get(('/'+component.constructor.name + '/' + m.substr(1,m.length)).toLowerCase(), function (req, res, next) {
-						com(req, res);
+						com.apply(component,[req, res]);
 					});
 				}else if(typeof com == 'object') {
-					var that = this;
+					let that = this;
 					com.connect('./app.data/modal')
 					.then(function(modals){
-						for(var point in modals) {
+						for(let point in modals) {
 							console.log(point);
 							that._app.post(point, upload.array(), function(req, res) {
 								console.log('POINT:' + point + '  ' + JSON.stringify(req.body));

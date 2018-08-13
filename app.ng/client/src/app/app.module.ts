@@ -9,6 +9,7 @@ import { AppComponent } from './app.component';
 import { routing }        from './app.routing';
 import { BusService } from './_service/bus.service';
 import { ProductTable } from './product/product.table';
+import { KeeperTable } from './keeper/keeper.table';
 import { ContentWrapper } from './table/Content.wrapper';
 import { NavbarComponent } from './navbar/navbar.component';
 
@@ -17,6 +18,7 @@ import { NavbarComponent } from './navbar/navbar.component';
     AppComponent,
     NavbarComponent,
     ProductTable,
+    KeeperTable,
     ContentWrapper
   ],
   imports: [
@@ -28,7 +30,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     BsDropdownModule.forRoot()
   ],
   entryComponents: [ 
-    ProductTable 
+    ProductTable,
+    KeeperTable
   ],
   providers: [BusService],
   bootstrap: [AppComponent]
