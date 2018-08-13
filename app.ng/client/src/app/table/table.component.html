@@ -9,20 +9,20 @@
                 <thead>
                     <tr>
                         <ng-container *ngFor="let col of cols">
-                            <th scope="col" *ngIf="col.visible">{{col.name}}</th>
+                            <th scope="col" *ngIf="col.visible">{{col.alias}}</th>
                         </ng-container>
                     </tr>
                 </thead>
                 <tbody>
-                    {{model.toString()}}
                     <tr *ngFor="let row of model; let j = index" (click)="onContainerClicked(row)">
-                        <ng-container *ngFor="let cell of row | keyvalue; let i = index">
-                            <td *ngIf="cols[i].visible">{{cell.value}}</td>
+                        <!-- <ng-container *ngFor="let cell of row | keyvalue; let i = index"> -->
+                        <ng-container *ngFor="let col of cols">
+                            <td *ngIf="col.visible">{{row[col.name]}}</td>
                         </ng-container>
                     </tr>
                 </tbody>
             </table>
-            <pagination [totalItems]="total" [(ngModel)]="page" [maxSize]="maxSize" [boundaryLinks]="true"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            <pagination (pageChanged)="pageChanged($event)" [totalItems]="total" [itemsPerPage]="numPerPg" [(ngModel)]="page" [maxSize]="maxSize" [boundaryLinks]="true"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
         </div>
     </div>
     <div class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}" [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">

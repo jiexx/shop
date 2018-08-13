@@ -1,8 +1,9 @@
-﻿import { ChangeDetectionStrategy, Component, Input, OnInit } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, ChangeDetectorRef, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
 import { Column } from './column';
 import { DclComponent } from '../_helper/dcl.component';
+import { map } from 'rxjs/operators';
 
 @Component({
     templateUrl: 'table.component.html',
@@ -11,9 +12,11 @@ import { DclComponent } from '../_helper/dcl.component';
 
 export class TableComponent implements OnInit, DclComponent {
     maxSize = 5;
+    numPerPg = 20;
     total = 175;
     page = 1;
 
+    url: string = '';
     model: any = [];
     cols: Array<Column>;
     row: Array<any>;
@@ -44,7 +47,8 @@ export class TableComponent implements OnInit, DclComponent {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private http: HttpClient) { }
+        private http: HttpClient,
+        protected ref: ChangeDetectorRef) { }
 
     ngOnInit() {
 
@@ -53,8 +57,16 @@ export class TableComponent implements OnInit, DclComponent {
         // this.router.navigate(['Welcome']);
     }
 
-    load(d: any) {
-        this.cols = d.cols;
-        return this.http.get<any>(d.url+'?version=2&pgidx='+(this.page-1));
+    pageChanged(event: any): void {
+        this.page = event.page;
+        this.load();
+    }
+
+    load(d: any = null) {
+        if(d) {
+            this.cols = d.cols;
+            this.url = d.url;
+        }
+        return this.http.get(this.url+'?version=2&pgidx='+(this.page-1)).pipe(map(res => res ));
     }
 }
