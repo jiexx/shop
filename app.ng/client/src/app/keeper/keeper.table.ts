@@ -20,11 +20,11 @@ export class KeeperTable extends TableComponent{
         ];
         var that = this;
         super.load({url:'http://localhost:8999/keeper/user/query',cols:cols}).subscribe(data => {
-            that.loading = false;
-            if (data instanceof Object && data.users) {
-                that.model = data.users;
-                that.loading = true;
-                that.total = data.pg.total;
+            var d: any = data;
+            if (d && d.users) {
+                that.model = d.users;
+                that.loading = false;
+                that.total = d.pg.total;
                 that.ref.detectChanges();
             }
         });

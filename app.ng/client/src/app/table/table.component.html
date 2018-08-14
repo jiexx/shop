@@ -2,7 +2,7 @@
 <div class="col-md-12 col-md-offset-3">
     <div class="card">
         <div class="card-header">
-             <div class="float-right">添加</div>
+            <button type="button" class="btn btn-primary float-right" (click)="add(template)">添加</button>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -11,30 +11,53 @@
                         <ng-container *ngFor="let col of cols">
                             <th scope="col" *ngIf="col.visible">{{col.alias}}</th>
                         </ng-container>
+                        <th scope="col">操作</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr *ngFor="let row of model; let j = index" (click)="onContainerClicked(row)">
+                    <tr *ngFor="let row of model; let j = index">
                         <!-- <ng-container *ngFor="let cell of row | keyvalue; let i = index"> -->
                         <ng-container *ngFor="let col of cols">
                             <td *ngIf="col.visible">{{row[col.name]}}</td>
                         </ng-container>
+                        <td class="btn-group">
+                            <button class="btn btn-link" (click)="remove(dialog,row)">
+                                <span class="glyphicon glyphicon-remove"></span>
+                            </button>
+                            <button class="btn btn-link" (click)="edit(template,row)">
+                                <span class="glyphicon glyphicon-wrench"></span>
+                            </button>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-            <pagination (pageChanged)="pageChanged($event)" [totalItems]="total" [itemsPerPage]="numPerPg" [(ngModel)]="page" [maxSize]="maxSize" [boundaryLinks]="true"  previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+            <pagination (pageChanged)="pageChanged($event)" [totalItems]="total" [itemsPerPage]="numPerPg" [(ngModel)]="page" [maxSize]="maxSize"
+                [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
         </div>
     </div>
-    <div class="modal fade" tabindex="-1" [ngClass]="{'in': visibleAnimate}" [ngStyle]="{'display': visible ? 'block' : 'none', 'opacity': visibleAnimate ? 1 : 0}">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="input-group" *ngFor="let col of cols; let i = index">
-                    <input type="text" class="form-control" value="{{col}}" />
+    <ng-template #template>
+        <div class="modal-header">
+            <h4 class="modal-title pull-left"></h4>
+            <button type="button" class="close pull-right" aria-label="Close" (click)="decline()">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body  text-center">
+            <ng-container *ngFor="let col of cols">
+                <div class="form-group">
+                    <input class="form-control mr-sm-2" type="text" name="username" placeholder="{{col.alias}}" [(ngModel)]="row[col.name]">
                 </div>
-            </div>
+            </ng-container>
+            <button type="button" class="btn btn-primary" (click)="confirm()">提交</button>
         </div>
-    </div>
-
+    </ng-template>
+    <ng-template #dialog>
+        <div class="modal-body text-center">
+            <p>{{info}}</p>
+            <button type="button" class="btn btn-default" (click)="confirm()">确定</button>
+            <button type="button" class="btn btn-primary" (click)="decline()">取消</button>
+        </div>
+    </ng-template>
     <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
     />
 </div>

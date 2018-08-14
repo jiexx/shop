@@ -1,0 +1,23 @@
+﻿<div bsModal #modal="bs-modal" class="modal fade" tabindex="-1" *ngIf="isAdd || isUpd">
+    <div class="modal-header">
+        <h4 class="modal-title pull-left"></h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="decline()">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body  text-center">
+        <ng-container *ngFor="let r of row">
+            <div class="form-group">
+                <input class="form-control mr-sm-2" type="text"  placeholder="{{col.alias}}" [(ngModel)]="row[col.name]">
+            </div>
+        </ng-container>
+        <button type="button" class="btn btn-primary" (click)="confirm()">提交</button>
+    </div>
+</div>
+<div bsModal #dialog="bs-modal" class="modal fade" tabindex="-1">
+    <div class="modal-body text-center">
+        <p>{{info}}</p>
+        <button type="button" class="btn btn-default" (click)="confirm()">确定</button>
+        <button type="button" class="btn btn-primary" (click)="decline()">取消</button>
+    </div>
+</div>

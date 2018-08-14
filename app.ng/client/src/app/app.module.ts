@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
-import { BsDropdownModule,PaginationModule } from 'ngx-bootstrap';
+import { BsDropdownModule,PaginationModule,ModalModule  } from 'ngx-bootstrap';
 import { AppComponent } from './app.component';
 import { routing }        from './app.routing';
 import { BusService } from './_service/bus.service';
@@ -27,7 +27,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     PaginationModule.forRoot(),
     routing,
     HttpClientModule,
-    BsDropdownModule.forRoot()
+    BsDropdownModule.forRoot(),
+    ModalModule.forRoot()
   ],
   entryComponents: [ 
     ProductTable,
