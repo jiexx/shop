@@ -12,14 +12,20 @@ export class OperatorComponent {
     isAdd: boolean = true;
     isDel: boolean = true;
     isUpd: boolean = true;
+    titles: Array<string> = [];
+    row: Array<any> = [];
 
-    constructor(add: boolean, del: boolean, upd: boolean) {
+    constructor(add: boolean, del: boolean, upd: boolean, titles: Array<string>) {
         this.isAdd = add;
         this.isDel = del;
         this.isUpd = upd;
+        this.titles = titles;
     }
 
-    add(row) {
-        this.modalRef = this.modalService.show(template);
+    add() {
+        this.modal.show();
+    }
+    onAdd(row:Array<any>) {
+
     }
 }

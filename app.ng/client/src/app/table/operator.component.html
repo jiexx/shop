@@ -6,9 +6,9 @@
         </button>
     </div>
     <div class="modal-body  text-center">
-        <ng-container *ngFor="let r of row">
+        <ng-container *ngFor="let title of titles">
             <div class="form-group">
-                <input class="form-control mr-sm-2" type="text"  placeholder="{{col.alias}}" [(ngModel)]="row[col.name]">
+                <input class="form-control mr-sm-2" type="text" name="username" placeholder="{{title}}" [(ngModel)]="row[title]">
             </div>
         </ng-container>
         <button type="button" class="btn btn-primary" (click)="confirm()">提交</button>
