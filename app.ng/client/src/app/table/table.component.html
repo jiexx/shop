@@ -2,7 +2,7 @@
 <div class="col-md-12 col-md-offset-3">
     <div class="card">
         <div class="card-header">
-            <button type="button" class="btn btn-primary float-right" (click)="add(template)">添加</button>
+            <button type="button" class="btn btn-primary float-right" (click)="op.add()">添加</button>
         </div>
         <div class="card-body">
             <table class="table table-hover">
@@ -21,10 +21,10 @@
                             <td *ngIf="col.visible">{{row[col.name]}}</td>
                         </ng-container>
                         <td class="btn-group">
-                            <button class="btn btn-link" (click)="remove(dialog,row)">
+                            <button class="btn btn-link" (click)="op.delete(row)">
                                 <span class="glyphicon glyphicon-remove"></span>
                             </button>
-                            <button class="btn btn-link" (click)="edit(template,row)">
+                            <button class="btn btn-link" (click)="op.update(row)">
                                 <span class="glyphicon glyphicon-wrench"></span>
                             </button>
                         </td>
@@ -35,29 +35,7 @@
                 [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
         </div>
     </div>
-    <ng-template #template>
-        <div class="modal-header">
-            <h4 class="modal-title pull-left"></h4>
-            <button type="button" class="close pull-right" aria-label="Close" (click)="decline()">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body  text-center">
-            <ng-container *ngFor="let col of cols">
-                <div class="form-group">
-                    <input class="form-control mr-sm-2" type="text" name="username" placeholder="{{col.alias}}" [(ngModel)]="row[col.name]">
-                </div>
-            </ng-container>
-            <button type="button" class="btn btn-primary" (click)="confirm()">提交</button>
-        </div>
-    </ng-template>
-    <ng-template #dialog>
-        <div class="modal-body text-center">
-            <p>{{info}}</p>
-            <button type="button" class="btn btn-default" (click)="confirm()">确定</button>
-            <button type="button" class="btn btn-primary" (click)="decline()">取消</button>
-        </div>
-    </ng-template>
+    <operator [cols]="cols"  [parent]="that" ></operator>
     <img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="
     />
 </div>

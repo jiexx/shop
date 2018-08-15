@@ -5,6 +5,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 import { BsDropdownModule,PaginationModule,ModalModule  } from 'ngx-bootstrap';
+import { SelectModule } from 'ng2-select';
 import { AppComponent } from './app.component';
 import { routing }        from './app.routing';
 import { BusService } from './_service/bus.service';
@@ -12,6 +13,7 @@ import { ProductTable } from './product/product.table';
 import { KeeperTable } from './keeper/keeper.table';
 import { ContentWrapper } from './table/Content.wrapper';
 import { NavbarComponent } from './navbar/navbar.component';
+import { OperatorComponent } from './table/operator.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     NavbarComponent,
     ProductTable,
     KeeperTable,
-    ContentWrapper
+    ContentWrapper,
+    OperatorComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     routing,
     HttpClientModule,
     BsDropdownModule.forRoot(),
-    ModalModule.forRoot()
+    ModalModule.forRoot(),
+    SelectModule
   ],
   entryComponents: [ 
     ProductTable,

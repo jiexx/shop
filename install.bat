@@ -15,6 +15,7 @@ start  "" /b "%exepath%" install -g crypto
 start  "" /b "%exepath%" install -g nano-time 
 start  "" /b "%exepath%" install -g cache-manager  
 start  "" /b "%exepath%" install -g cache-manager-fs
+start  "" /b "%exepath%" install -g uuid
 start  "" /b "%exepath%" link express     
 start  "" /b "%exepath%" link fdfs      
 start  "" /b "%exepath%" link fast-csv         
@@ -28,3 +29,4 @@ start  "" /b "%exepath%" link crypto
 start  "" /b "%exepath%" link nano-time    
 start  "" /b "%exepath%" link cache-manager  
 start  "" /b "%exepath%" link cache-manager-fs
+start  "" /b "%exepath%" link uuid

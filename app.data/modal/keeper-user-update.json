@@ -1,0 +1,7 @@
+{
+    "updateuser": {
+        "sql": "update keeper.users  set USERNAME=?,USERPWD=?,EMPLOYEENAME=?,DEPARTMENT=?,JOB=?,EMAIL=?,TEL=?,status=?,SEX=?, UPDATETIME=now() where ID=?",
+        "params": ["USERNAME", "USERPWD", "EMPLOYEENAME", "DEPARTMENT", "JOB", "EMAIL", "TEL", "STATUS", "SEX", "ID"]
+    }
+
+}

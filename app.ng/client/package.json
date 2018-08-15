@@ -24,7 +24,8 @@
     "jquery": "^3.3.1",
     "ngx-bootstrap": "^3.0.1",
     "rxjs": "^6.0.0",
-    "zone.js": "^0.8.26"
+    "zone.js": "^0.8.26",
+    "ng2-select": "^2.0.0"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.7.0",
@@ -46,6 +47,7 @@
     "ts-node": "~5.0.1",
     "tslint": "~5.9.1",
     "typescript": "~2.7.2",
-    "ngx-bootstrap": "^3.0.1"
+    "ngx-bootstrap": "^3.0.1",
+    "ng2-select": "^2.0.0"
   }
 }

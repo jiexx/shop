@@ -1,11 +1,11 @@
-﻿import { ChangeDetectionStrategy, Component, ChangeDetectorRef, OnInit, TemplateRef } from '@angular/core';
+﻿import { ChangeDetectionStrategy, Component, ChangeDetectorRef, OnInit, TemplateRef, ViewChild } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Column } from './column';
 import { DclComponent } from '../_helper/dcl.component';
 import { map } from 'rxjs/operators';
-import { BsModalService } from 'ngx-bootstrap/modal';
-import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
+import { OperatorComponent } from './operator.component';
+
 
 @Component({
     templateUrl: 'table.component.html',
@@ -13,6 +13,7 @@ import { BsModalRef } from 'ngx-bootstrap/modal/bs-modal-ref.service';
 })
 
 export class TableComponent implements OnInit, DclComponent {
+    @ViewChild(OperatorComponent) op: OperatorComponent;
     maxSize = 5;
     numPerPg = 20;
     total = 175;
@@ -21,12 +22,18 @@ export class TableComponent implements OnInit, DclComponent {
     url: string = '';
     model: any = [];
     cols: Array<Column>;
-    row: Array<any>;
+    titles: Array<any> = [];
+    alias: Array<any> = [];
     loading = false;
     returnUrl: string;
 
-    modalRef: BsModalRef = null;
-    dialogRef: BsModalRef = null;
+    that = this;
+    
+    protected httpOptions: any = {
+        headers: new HttpHeaders({
+          'Content-Type':  'application/json',
+        })
+    }
 
     public visible = false;
     public visibleAnimate = false;
@@ -44,9 +51,9 @@ export class TableComponent implements OnInit, DclComponent {
     constructor(
         private route: ActivatedRoute,
         private router: Router,
-        private http: HttpClient,
-        protected ref: ChangeDetectorRef,
-        private modalService: BsModalService) { }
+        protected http: HttpClient,
+        protected ref: ChangeDetectorRef
+        ) { }
 
     ngOnInit() {
 
@@ -60,46 +67,12 @@ export class TableComponent implements OnInit, DclComponent {
         this.load();
     }
 
-    openModal(template: TemplateRef<any>) {
-        this.modalRef = this.modalService.show(template);
-    }
-
-    confirm(): void {
-        this.modalRef.hide();
-    }
-
-    decline(): void {
-        this.modalRef.hide();
-    }
-
-    openDialog(template: TemplateRef<any>) {
-        this.dialogRef = this.modalService.show(template);
-    }
-    dlgConfirm(): void {
-        this.dialogRef.hide();
-    }
-
-    dlgDecline(): void {
-        this.dialogRef.hide();
-    }
-
     load(d: any = null) {
         if (d) {
             this.cols = d.cols;
             this.url = d.url;
-            this.row = Array(d.cols.length).fill('');
         }
-        return this.http.get(this.url + '?version=2&pgidx=' + (this.page - 1)).pipe(map(res => res));
-    }
-
-    wrench(template: TemplateRef<any>, row: any): void {
-        this.modalRef = this.modalService.show(template);
-        this.row = row;
-    }
-
-    remove(template: TemplateRef<any>, row: any): void {
-        this.dialogRef = this.modalService.show(template);
-        this.row = row;
+        return this.http.get(this.url + '&pgidx=' + ((this.page - 1)*20)).pipe(map(res => res));
     }
 
 }

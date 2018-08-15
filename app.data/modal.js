@@ -1,6 +1,7 @@
 var mysql = require('mysql');
 var config = require('../config');
 var FdfsClient = require('fdfs');
+const uuidv4 = require('uuid/v4');
 var fdfs = new FdfsClient({
     // tracker servers
     trackers: [{
@@ -24,11 +25,13 @@ var pool = mysql.createPool({
         //console.log(query);
         if (!values) return query;
         var i = 0;
-        var q = query.replace(/\?|n\?/g, function(txt, key) {
+        var q = query.replace(/\?|n\?|#i/g, function(txt, key) {
             if (txt == '?') {
                 return "\'" + values[i++] + "\'";
             } else if (txt == 'n?') {
                 return values[i++];
+            }else if (txt == '#i') {
+                return "\'" + uuidv4() + "\'";
             }
             return txt;
         });

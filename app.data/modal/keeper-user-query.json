@@ -1,4 +1,5 @@
 {
-    "users": { "sql": "select a.*,b.JOBDESC from  keeper.users  a inner join keeper.jobs b on (a.JOB=b.JOB) order by a.ID desc LIMIT n?, 20;", "params": ["pgidx"] },
+    "users": { "sql": "select a.*,b.JOBDESC from  keeper.users  a left join keeper.jobs b on (a.JOB=b.JOB) order by a.CREATTIME desc LIMIT n?, 20;", "params": ["pgidx"] },
+    "jobs": { "sql": "select JOB as id,JOBDESC as text from keeper.jobs;", "params": [] },
     "pg": { "sql": "SELECT ceil(count(*)/20) as cnt, count(*) as total FROM keeper.users;", "params": [] }
 }

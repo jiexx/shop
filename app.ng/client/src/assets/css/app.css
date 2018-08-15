@@ -12,7 +12,13 @@ body {
 
 [class^="dropdown-menu"],[class*="dropdown-menu"] {
 left:auto !important;
-}
 
+}
+.ui-select-choices{
+    display:block;
+}
+.btn-secondary{
+    
+}
 
 
