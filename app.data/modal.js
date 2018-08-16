@@ -1,13 +1,15 @@
 var mysql = require('mysql');
 var config = require('../config');
+var day = require('../lib/day');
 var FdfsClient = require('fdfs');
+var request = require('request');
 const uuidv4 = require('uuid/v4');
 var fdfs = new FdfsClient({
     // tracker servers
     trackers: [{
-        host: config.TRACKER_SERVER,
+        host: config.IMG_HOST,
         // host: '101.37.22.3',//'172.16.36.1',//'10.101.1.165',//'123.59.144.47','10.101.1.165'
-        port: 22122
+        port: config.IMG_HOST_PORT
     }],
     timeout: 10000,
     //defaultExt: 'txt',
@@ -40,7 +42,6 @@ var pool = mysql.createPool({
         return q;
     }
 });
-var IMG_HOST = config.IMG_HOST; //"http://pic.dengnilvyou.com.cn/";
 
 function doSql(funcArgu, onFinish) {
     pool.getConnection(function(err, conn) {
@@ -87,15 +88,34 @@ var uploadImage = function uploadImage(funcArgu, onFinish) {
         onFinish('');
         return;
     }
-    var pic = decodeBase64Image(funcArgu.base64);
-    fdfs.upload(pic.data, { ext: 'jpg' }).then(function(fileId) {
-        //console.log(fileId);
-        if (onFinish) {
-            onFinish(fileId);
-        }
-    }).catch(function(err) {
-        console.log(err);
-    });
+    if(config.IMG_HOST_FDFS){
+        var pic = decodeBase64Image(funcArgu.base64);
+        fdfs.upload(pic.data, { ext: 'jpg' }).then(function(fileId) {
+            //console.log(fileId);
+            if (onFinish) {
+                onFinish(fileId);
+            }
+        }).catch(function(err) {
+            console.log(err);
+        });
+    }else {
+        request.post({
+            url: config.IMG_HOST+':'+config.IMG_HOST_PORT+'/upload',
+            method: "POST",
+            json: {pic:funcArgu.base64}
+        }, function (error, response, body) {
+            if (!error && response.statusCode == 200) {
+                var result = JSON.parse(body);
+                if (result.code == 'OK' && onFinish) {
+                    onFinish(result.msg);
+                }else {
+                    console.log(day.full(),body);
+                }
+            }else{
+                console.log(day.full(),body);
+            }
+        });
+    } 
 };
 
 var CallbackLooper = {

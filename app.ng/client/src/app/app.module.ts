@@ -14,6 +14,8 @@ import { KeeperTable } from './keeper/keeper.table';
 import { ContentWrapper } from './table/Content.wrapper';
 import { NavbarComponent } from './navbar/navbar.component';
 import { OperatorComponent } from './table/operator.component';
+import { ImageComponent } from './table/image.component';
+
 
 @NgModule({
   declarations: [
@@ -22,7 +24,8 @@ import { OperatorComponent } from './table/operator.component';
     ProductTable,
     KeeperTable,
     ContentWrapper,
-    OperatorComponent
+    OperatorComponent,
+    ImageComponent
   ],
   imports: [
     BrowserModule,

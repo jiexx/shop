@@ -2,8 +2,7 @@ for %%I in (npm) do set "exepath=%%~$PATH:I"
 
 echo %exepath%
 
-start  "" /b "%exepath%" install -g express 
-start  "" /b "%exepath%" install -g fdfs     
+start  "" /b "%exepath%" install -g express   
 start  "" /b "%exepath%" install -g fast-csv   
 start  "" /b "%exepath%" install -g mysql      
 start  "" /b "%exepath%" install -g request    
@@ -16,8 +15,7 @@ start  "" /b "%exepath%" install -g nano-time
 start  "" /b "%exepath%" install -g cache-manager  
 start  "" /b "%exepath%" install -g cache-manager-fs
 start  "" /b "%exepath%" install -g uuid
-start  "" /b "%exepath%" link express     
-start  "" /b "%exepath%" link fdfs      
+start  "" /b "%exepath%" link express         
 start  "" /b "%exepath%" link fast-csv         
 start  "" /b "%exepath%" link mysql            
 start  "" /b "%exepath%" link request          
