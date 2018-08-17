@@ -9,6 +9,12 @@ body {
  background-color: #eee;
  font-family: "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Microsoft YaHei", sans-serif;
 }
+.table > tbody > tr > td {
+    vertical-align: middle;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
 
 [class^="dropdown-menu"],[class*="dropdown-menu"] {
 left:auto !important;

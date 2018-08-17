@@ -1,12 +1,11 @@
- exports.IMG_HOST = "127.0.0.1";
+ exports.IMG_HOST = "localhost";
  exports.IMG_HOST_PORT = "9900";
- exports.IMG_HOST_DIR = "./images";
- exports.IMG_URL = 'http://'+this.IMG_HOST+':'+this.IMG_HOST_PORT +'/';
+ exports.IMG_HOST_DIR = "./picture/";
  exports.IMG_HOST_FDFS = false;
  exports.LOCAL_HOST = "192.168.1.214"; //"http://101.37.21.172:80";
- exports.DATA_HOST = "127.0.0.1"; //"114.55.139.196";
+ exports.DATA_HOST = "192.168.1.38"; //"114.55.139.196";
  exports.DBUSER = "root";
- exports.DBPWD = "123$%^";
+ exports.DBPWD = "yw@123$%^";
  exports.DB1 = "shop1";
  exports.DB2 = "shop2";
  exports.HOST = "localhost";

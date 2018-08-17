@@ -5,7 +5,9 @@ import { Column } from '../table/column';
 
 export class KeeperTable extends TableComponent{
     cols: Array<Column> = [
-        new Column('ID',          'ID'      , true, 0 ),
+        new Column('ID',          'ID'      , false, 0 ),
+        new Column('NO',          'ID'      , true, 0 ),
+        new Column('AVATAR',      '头像'    , true, 5,{image:true,size:'_50x50'}),
         new Column('USERNAME',    '用户名'  , true, 1, {valid:Column.isnull}),
         new Column('USERPWD',     '密码'    , false, 2, {valid:Column.isnull, password:true}),
         new Column('EMPLOYEENAME','姓名'    , true, 1, {valid:Column.isnull}),
@@ -43,10 +45,11 @@ export class KeeperTable extends TableComponent{
     onAdd(row:any){
         if(!row) return;
         var that = this;
-        this.http.post('http://localhost:8999/keeper/user/add?version=2', row, this.httpOptions).subscribe(result => {
+        var data = {newuser:row}; //如要利用嵌套sql，row 结构必须与modal层级结构相同
+        this.http.post('http://localhost:8999/keeper/user/add?version=2', data, this.httpOptions).subscribe(result => {
             var r: any = result;
             if (r && r.newuser.affectedRows == 1) {
-                that.op.showMessage('更新成功');
+                that.op.showMessage('添加成功');
                 that.load(null);
             }
         });

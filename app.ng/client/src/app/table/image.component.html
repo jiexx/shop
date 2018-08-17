@@ -1,12 +1,15 @@
-﻿
-<div *ngFor="let img of images; let i = index ">
-    <div style="width:100%; display: inline-block; vertical-align: middle; position: relative; height: 120px;">
-        <img stytle="width:100%; height: 100%;" src="{{img}}" (click)="onClick(i)">
-        <a class="glyphicon glyphicon-remove-circle" style="position: absolute; font-size: 16px; color:#00b8ee; cursor: pointer; top: -8px; right: -8px;"></a>
+﻿<div style="display: table">
+    <div style="display:table-cell; vertical-align: middle; position: relative;padding-right:10px" *ngFor="let img of images; let i = index ">
+        <img [ngStyle]="{'width.px':width,'height.px':height}" src="{{img}}">
+        <a class="glyphicon glyphicon-remove-sign" style="position: absolute; font-size:20px; color:#ee0000; cursor: pointer; top:-4px; right:4px;"
+            (click)="onClick(i)"></a>
     </div>
-</div>
-<div style="border:1px dashed #ccc; font-size: 60px; text-align: center; color:#CCC; line-height: 120px; height: 120px;">+</div>
-<div>
-     <canvas  #imgcanvas style="position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%"></canvas>
-     <input type="file" style="position:absolute;opacity:0;top:0;bottom:0;left:0;right:0;width:100%;cursor:pointer;" multiple="multiple" #file (change)="onChange(file.files, imgcanvas)"/>
+
+    <div style="display:table-cell;position:relative;margin:5px" [ngStyle]="{'width.px':width,'height.px':height}" *ngIf="images.length<max">
+        <div style="border:1px dashed #ccc; font-size: 60px; text-align: center; color:#CCC; vertical-align: middle;width:100%;height:100%"
+            [ngStyle]="{'line-height.px':width}">+</div>
+        <canvas #imgcanvas style="position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%"></canvas>
+        <input type="file" style="position:absolute;opacity:0;top:0;bottom:0;left:0;right:0;width:100%;cursor:pointer;" multiple="multiple"
+            #file (change)="onChange(file.files, imgcanvas)" />
+    </div>
 </div>

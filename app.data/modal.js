@@ -4,6 +4,8 @@ var day = require('../lib/day');
 var FdfsClient = require('fdfs');
 var request = require('request');
 const uuidv4 = require('uuid/v4');
+var base64 = require('../lib/base64');
+
 var fdfs = new FdfsClient({
     // tracker servers
     trackers: [{
@@ -69,27 +71,13 @@ function doSql(funcArgu, onFinish) {
     });
 };
 
-function decodeBase64Image(dataString) {
-    //////console.log(dataString);
-    var matches = dataString.match(/^data:([A-Za-z-+\/]+);base64,(.+)$/),
-        response = {};
-
-    if (!matches || matches.length !== 3) {
-        return new Error('Invalid input string');
-    }
-
-    response.type = matches[1];
-    response.data = new Buffer(matches[2], 'base64');
-
-    return response;
-};
 var uploadImage = function uploadImage(funcArgu, onFinish) {
     if (!funcArgu.base64) {
         onFinish('');
         return;
     }
     if(config.IMG_HOST_FDFS){
-        var pic = decodeBase64Image(funcArgu.base64);
+        var pic = base64.decode(funcArgu.base64);
         fdfs.upload(pic.data, { ext: 'jpg' }).then(function(fileId) {
             //console.log(fileId);
             if (onFinish) {
@@ -100,19 +88,18 @@ var uploadImage = function uploadImage(funcArgu, onFinish) {
         });
     }else {
         request.post({
-            url: config.IMG_HOST+':'+config.IMG_HOST_PORT+'/upload',
+            url: config.IMG_URL+'upload',
             method: "POST",
             json: {pic:funcArgu.base64}
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
-                var result = JSON.parse(body);
-                if (result.code == 'OK' && onFinish) {
-                    onFinish(result.msg);
+                if (body.code == 'OK' && onFinish) {
+                    onFinish(config.IMG_URL+body.msg);
                 }else {
                     console.log(day.full(),body);
                 }
             }else{
-                console.log(day.full(),body);
+                console.log(day.full(),error);
             }
         });
     } 

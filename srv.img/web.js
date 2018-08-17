@@ -9,7 +9,9 @@ var fs = require("fs");
 const sharp = require('sharp');
 var config = require('../config');
 var day = require('../lib/day');
+var base64 = require('../lib/base64');
 const uuidv4 = require('uuid/v4');
+var mkdirp = require('mkdirp');
 
 app.use(compression());
 app.use(bodyParser.json({limit: '50mb'})); // for parsing application/json
@@ -23,13 +25,15 @@ app.use(function(req, res, next) {
 
 app.post('/upload', upload.array(), function (req, res) {
     var data = req.body;
-    var buff = new Buffer(data.pic, 'base64');
+    var imageBuffer = base64.decode(data.pic);
     var fd = uuidv4();
-    fs.write(config.IMG_HOST_DIR+fd, buff, 0, buff.length, 0, function(err,written){
+    fs.writeFile(config.IMG_HOST_DIR+'/'+fd, imageBuffer.data, function(err,written){
         if(!err){
             res.json({ code: 'OK', msg: fd, data: null });
+            console.log(day.full(), 'OK', fd);
         }else {
             res.json({ code: 'ERR', msg: '写失败', data: null });
+            console.log(day.full(), err);
         }
     });
 
@@ -37,31 +41,35 @@ app.post('/upload', upload.array(), function (req, res) {
 
 app.get('/:img', upload.array(), function (req, res) {
 
-    var img = req.params.img;
-    if(!fs.existsSync(config.IMG_HOST_DIR+img)){
+    var img = config.IMG_HOST_DIR+'/'+req.params.img;
+    if(!fs.existsSync(img)){
         var matches = img.match(/^([^_]+)_([^x]+)x(.+)$/);
-        if (!matches || matches.length !== 4 || !fs.existsSync(config.IMG_HOST_DIR+matches[1])) {
+        if (!matches || matches.length !== 4 || !fs.existsSync(matches[1])) {
             res.json({ code: 'ERR', msg: '文件不存在', data: null });
         }else {
-            var w = matches[2], h = matches[3];
+            var w = parseInt(matches[2]), h = parseInt(matches[3]);
             sharp(matches[1]).resize(w, h)
             .toFile(img, (err, info) => {
                 if(!err){
-                    res.sendFile(img);
+                    res.header("Content-Type", "image/gif");
+                    res.sendFile(img,{ root: __dirname });
                 }else{
                     res.json({ code: 'ERR', msg: '文件不存在', data: null });
                 }
             });
         }
     }else{
-        res.sendFile(img);
+        res.header("Content-Type", "image/gif");
+        res.sendFile(img,{ root: __dirname });
     }
 });
 
 
 
 var server = app.listen(config.IMG_HOST_PORT, function() {
-	
+	mkdirp(config.IMG_HOST_DIR, function(err) { 
+        console.log(day.full(),' DIR ERR', err);
+    });
 	var host = server.address().address;
 	var port = server.address().port;
 	console.log(day.full(),' RUNNING http://%s:%s', host, port);

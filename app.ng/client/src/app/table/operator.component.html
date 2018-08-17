@@ -15,6 +15,10 @@
                     <div class="form-group" *ngIf="row != {} && col.type == 2">
                         <input class="form-control mr-sm-2" type="password" placeholder="{{col.alias}}" [(ngModel)]="row[col.name]">
                     </div>
+                    <div class="form-group  text-left" *ngIf="row != {} && col.type == 5">
+                        <span style="color:gray">{{col.alias}}</span>
+                        <image-upload [width]=100 [height]=100 [scaleWidth]=300 [scaleHeight]=300 [images]="[row[col.name]]"></image-upload>
+                    </div>
                     <div class="form-group text-left" *ngIf="row != {} && col.type == 3 && col.options.select">
                         <span style="color:gray">{{col.alias}}</span>
                         <ng-select  [items]="col.options.select" [disabled]="disabled" (selected)="selected(col.options.select, col.name,$event)" placeholder="{{unselected(col.options.select, row[col.name])}}">

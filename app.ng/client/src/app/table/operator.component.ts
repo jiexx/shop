@@ -3,6 +3,7 @@ import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Column } from './column';
 import { SelectModule } from 'ng2-select';
 import { md5 } from '../_helper/md5';
+import { ImageComponent } from './image.component';
 
 @Component({
     selector: 'operator',
@@ -13,6 +14,7 @@ export class OperatorComponent implements OnInit {
     @Input() parent: any; 
     @ViewChild('modal') modal: ModalDirective;
     @ViewChild('dialog') dialog: ModalDirective;
+    @ViewChild(ImageComponent) image: ImageComponent;
 
     row = {};
 
@@ -22,6 +24,7 @@ export class OperatorComponent implements OnInit {
     info: string = '';
     noinfobtn: boolean = true;
     _next: Function = null;
+    _status: string = '';
 
     ngOnInit() {
     }
@@ -33,6 +36,8 @@ export class OperatorComponent implements OnInit {
             if(col && col.options) {
                 if( col.options.password) {
                     row[col.name] = md5(row[col.name]);
+                }else if(col.options.image){
+                    row[col.name] = {IMGS:this.image.get()};
                 }
                 if(col.options.valid) {
                     var valid = <Function>col.options.valid;
@@ -68,6 +73,7 @@ export class OperatorComponent implements OnInit {
         this.header = '添加';
         this.modal.show();
         this._next = this.parent ? this.parent.onAdd : null;
+        this._status = 'add';
     };
     delete(row) {
         this.row = row;
@@ -75,6 +81,7 @@ export class OperatorComponent implements OnInit {
         this.noinfobtn = true;
         this.dialog.show();
         this._next = this.parent ? this.parent.onDelete : null;
+        this._status = 'del';
     }
     update(row) {
         this.header = '修改';
@@ -85,10 +92,11 @@ export class OperatorComponent implements OnInit {
         }
         this.modal.show();
         this._next = this.parent ? this.parent.onUpdate : null;
+        this._status = 'upd';
     }
     confirm(){
         if(this._next) {
-            if(this._valid(this.row)){
+            if(this._status == 'del' || this._valid(this.row)){
                 this._next.call(this.parent,this.row);
                 this._next = null;
             }else {
