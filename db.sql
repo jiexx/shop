@@ -1,27 +1,153 @@
--- MySQL dump 10.13  Distrib 5.7.17, for Win64 (x86_64)
+-- MySQL dump 10.13  Distrib 8.0.12, for Win64 (x86_64)
 --
--- Host: 192.168.1.38    Database: keeper
+-- Host: 127.0.0.1    Database: product
 -- ------------------------------------------------------
--- Server version	5.7.20
+-- Server version	8.0.12
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
-/*!40101 SET NAMES utf8 */;
+ SET NAMES utf8 ;
 /*!40103 SET @OLD_TIME_ZONE=@@TIME_ZONE */;
 /*!40103 SET TIME_ZONE='+00:00' */;
 /*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
-ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123$%^'
+
+--
+-- Current Database: `product`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `product` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+
+USE `product`;
+
+--
+-- Table structure for table `item`
+--
+
+DROP TABLE IF EXISTS `item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `item` (
+  `ID` char(37) NOT NULL,
+  `NO` bigint(32) NOT NULL AUTO_INCREMENT,
+  `USERID` char(37) DEFAULT NULL,
+  `NAME` varchar(64) DEFAULT NULL,
+  `PRICE` float DEFAULT NULL,
+  `STATE` varchar(8) DEFAULT NULL COMMENT '上架，下架',
+  `CREATETIME` varchar(32) DEFAULT NULL,
+  `UPDATETIME` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`NO`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item`
+--
+
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `poster`
+--
+
+DROP TABLE IF EXISTS `poster`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `poster` (
+  `ID` char(37) NOT NULL,
+  `NO` bigint(32) NOT NULL AUTO_INCREMENT,
+  `USERID` char(37) DEFAULT NULL,
+  `PRODUCTID` char(37) DEFAULT NULL,
+  `TITLE` varchar(64) DEFAULT NULL,
+  `PERSONNUMREQ` int(11) DEFAULT NULL COMMENT '成单人数到达后给userid通知发货',
+  `STATE` varchar(8) DEFAULT NULL COMMENT '待成单,已成单,已结束(到期,已发货)',
+  `EXP` varchar(32) DEFAULT NULL,
+  `FD` varchar(128) DEFAULT NULL,
+  `CREATETIME` varchar(32) DEFAULT NULL,
+  `UPDATETIME` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`NO`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `poster`
+--
+
+LOCK TABLES `poster` WRITE;
+/*!40000 ALTER TABLE `poster` DISABLE KEYS */;
+/*!40000 ALTER TABLE `poster` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Current Database: `client`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `client` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+
+USE `client`;
+
+--
+-- Table structure for table `users`
+--
+
+DROP TABLE IF EXISTS `users`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `users` (
+  `ID` char(37) NOT NULL,
+  `NO` bigint(32) NOT NULL AUTO_INCREMENT,
+  `OPENID` varchar(64) DEFAULT NULL,
+  `USERNAME` varchar(36) DEFAULT NULL,
+  `USERPWD` varchar(36) DEFAULT NULL,
+  `NICKNAME` varchar(36) DEFAULT NULL,
+  `JOB` varchar(8) DEFAULT NULL,
+  `ADDRESS` varchar(256) DEFAULT NULL,
+  `EMAIL` varchar(36) DEFAULT NULL,
+  `TEL` varchar(36) DEFAULT NULL,
+  `STATE` varchar(8) DEFAULT NULL COMMENT '未注册，已注册(未付费), 已付费',
+  `AVAILABE` float DEFAULT NULL COMMENT '每share一次增加点数',
+  `BALANCE` float DEFAULT NULL,
+  `GENDER` varchar(4) DEFAULT NULL,
+  `CREATETIME` varchar(32) DEFAULT NULL,
+  `UPDATETIME` varchar(32) DEFAULT NULL,
+  `AVATAR` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`NO`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `users`
+--
+
+LOCK TABLES `users` WRITE;
+/*!40000 ALTER TABLE `users` DISABLE KEYS */;
+/*!40000 ALTER TABLE `users` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Current Database: `keeper`
+--
+
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `keeper` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+
+USE `keeper`;
+
 --
 -- Table structure for table `flows`
 --
 
 DROP TABLE IF EXISTS `flows`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `flows` (
   `ID` int(11) DEFAULT NULL,
   `TYPEOP` text,
@@ -53,9 +179,9 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `jobs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `jobs` (
-  `JOB` text,
+  `JOB` varchar(8) DEFAULT NULL,
   `PERMISSION` text,
   `ID` int(11) DEFAULT NULL,
   `JOBDESC` text
@@ -78,7 +204,7 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `tasks`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `tasks` (
   `ID` int(11) DEFAULT NULL,
   `TYPEOP` text,
@@ -106,21 +232,25 @@ UNLOCK TABLES;
 
 DROP TABLE IF EXISTS `users`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!40101 SET character_set_client = utf8 */;
+ SET character_set_client = utf8mb4 ;
 CREATE TABLE `users` (
-  `ID` int(11) DEFAULT NULL,
+  `ID` char(37) NOT NULL,
+  `NO` bigint(32) NOT NULL AUTO_INCREMENT,
   `USERNAME` text,
   `USERPWD` text,
   `EMPLOYEENAME` text,
   `DEPARTMENT` text,
-  `JOB` text,
+  `JOB` varchar(8) DEFAULT NULL,
   `EMAIL` text,
-  `TEL` bigint(20) DEFAULT NULL,
+  `TEL` varchar(36) DEFAULT NULL,
   `STATUS` text,
   `SEX` text,
-  `CREATTIME` text,
-  `UPDATETIME` text
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `CREATETIME` text,
+  `UPDATETIME` text,
+  `AVATAR` varchar(128) DEFAULT NULL,
+  PRIMARY KEY (`NO`),
+  UNIQUE KEY `ID` (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=67 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -129,17 +259,72 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (217,'cg2','e10adc3949ba59abbe56e057f20f883e','cg2','人事部','CJGL','892494300@qq.com',13903871527,'在职','男','2018-07-24 13:38:37',''),(102,'ca1','E10ADC3949BA59ABBE56E057F20F883E','ca1','运营部','SYY0','18516551002@163.com',18516551002,'在职','男','','2018-07-09 09:15:37'),(103,'ca2','E10ADC3949BA59ABBE56E057F20F883E','ca2','运营部','SYY0','18516551003@163.com',18516551003,'在职','男','',''),(104,'opc1','E10ADC3949BA59ABBE56E057F20F883E','opc1','运营部','YYZY','18516551004@163.com',18516551004,'在职','男','','2018-07-06 11:20:02'),(105,'opc2','E10ADC3949BA59ABBE56E057F20F883E','opc2','运营部','YYZY','18516551005@163.com',18516551005,'在职','男','','2018-06-14 15:31:49'),(106,'opm1','E10ADC3949BA59ABBE56E057F20F883E','opm1','运营部','YYJL','18516551006@163.com',18516551006,'在职','女','','2018-06-27 15:18:40'),(107,'opm2','E10ADC3949BA59ABBE56E057F20F883E','opm2','运营部','YYJL','18516551007@163.com',18516551007,'在职','女','','2018-06-27 15:36:18'),(108,'opi1','E10ADC3949BA59ABBE56E057F20F883E','opi1','运营部','YYZJ','18516551009@163.com',18516551009,'在职','女','','2018-06-27 15:36:38'),(109,'opi2','E10ADC3949BA59ABBE56E057F20F883E','opi2','运营部','YYZJ','18516551008@163.com',18516551008,'在职','女','',''),(110,'opf1','E10ADC3949BA59ABBE56E057F20F883E','opf1','运营部','YYFZ','18516551010@163.com',18516551010,'在职','男','','2018-06-27 15:37:00'),(111,'opf2','E10ADC3949BA59ABBE56E057F20F883E','opf2','运营部','YYFZ','18516551011@163.com',18516551011,'在职','男','',''),(112,'mac1','E10ADC3949BA59ABBE56E057F20F883E','mac1','市场部','SCZY','18516551012@163.com',18516551012,'在职','男','','2018-06-08 09:12:17'),(113,'mac2','E10ADC3949BA59ABBE56E057F20F883E','mac2','市场部','SCZY','18516551013@163.com',18516551013,'在职','男','',''),(114,'mam1','E10ADC3949BA59ABBE56E057F20F883E','mam1','市场部','SCJL','18516551014@163.com',18516551014,'在职','男','','2018-06-05 14:18:53'),(115,'mam2','E10ADC3949BA59ABBE56E057F20F883E','mam2','市场部','SCJL','18516551015@163.com',18516551015,'在职','女','',''),(116,'mai1','E10ADC3949BA59ABBE56E057F20F883E','mai1','市场部','SCZJ','18516551015@163.com',18516551016,'在职','男','','2018-06-05 13:56:56'),(117,'mai2','E10ADC3949BA59ABBE56E057F20F883E','mai2','市场部','SCZJ','18516551016@163.com',18516551017,'在职','女','',''),(118,'maf1','E10ADC3949BA59ABBE56E057F20F883E','maf1','市场部','SCFZ','18516551017@163.com',18516551018,'在职','女','','2018-06-05 13:58:15'),(119,'maf2','E10ADC3949BA59ABBE56E057F20F883E','maf2','市场部','SCFZ','18516551018@163.com',18516551019,'在职','女','',''),(120,'fac1','E10ADC3949BA59ABBE56E057F20F883E','fac1','财务部','CWZY','18516551019@163.com',18516551020,'在职','女','',''),(121,'fac2','E10ADC3949BA59ABBE56E057F20F883E','fac2','财务部','CWZY','18516551020@163.com',18516551021,'在职','女','',''),(122,'fam1','E10ADC3949BA59ABBE56E057F20F883E','fam1','财务部','CWJL','18516551021@163.com',18516551022,'在职','男','','2018-06-27 15:36:27'),(123,'fam2','E10ADC3949BA59ABBE56E057F20F883E','fam2','财务部','CWJL','18516551022@163.com',18516551023,'在职','男','',''),(124,'fai1','E10ADC3949BA59ABBE56E057F20F883E','fai1','财务部','CWZJ','18516551023@163.com',18516551024,'在职','男','','2018-06-27 15:36:49'),(125,'fai2','E10ADC3949BA59ABBE56E057F20F883E','fai2','财务部','CWZJ','18516551024@163.com',18516551025,'在职','男','',''),(126,'faf1','E10ADC3949BA59ABBE56E057F20F883E','faf1','财务部','CWFZ','18516551024@163.com',18516551026,'在职','男','','2018-06-27 15:37:08'),(127,'faf2','E10ADC3949BA59ABBE56E057F20F883E','faf2','财务部','CWFZ','18516551025@163.com',18516551027,'在职','男','',''),(128,'hrc1','E10ADC3949BA59ABBE56E057F20F883E','hrc1','人事部','RSZY','18516551026@163.com',18516551028,'在职','男','','2018-05-30 15:59:28'),(129,'hrc2','E10ADC3949BA59ABBE56E057F20F883E','hrc2','人事部','RSZY','18516551027@163.com',18516551029,'在职','女','',''),(130,'hrm1','E10ADC3949BA59ABBE56E057F20F883E','hrm1','人事部','RSJL','18516551028@163.com',18516551030,'在职','女','',''),(131,'hrm2','E10ADC3949BA59ABBE56E057F20F883E','hrm2','人事部','RSJL','18516551029@163.com',18516551031,'在职','女','',''),(132,'ceo','E10ADC3949BA59ABBE56E057F20F883E','ceo','总经理室','ZJL0','18516551030@163.com',18516551032,'在职','男','','2018-06-27 15:37:17'),(215,'cooling1','e10adc3949ba59abbe56e057f20f883e','cooling1','人事部','CJGL','18516551018@163.com',18516551019,'在职','男','2018-07-10 17:00:59',''),(205,'ym1','e10adc3949ba59abbe56e057f20f883e','test1','运营部','TEST','892494300@qq.com',13903871527,'在职','男','2018-06-05 15:35:11','2018-07-01 20:59:54'),(209,'lm','C4CA4238A0B923820DCC509A6F75849B','刘梦','炎武','CJGL','18516558289@163.com',18516558289,'在职','女','2018-06-08 16:39:57','2018-07-18 15:07:04'),(208,'ym','e10adc3949ba59abbe56e057f20f883e','杨沫','炎武','CS4','892494300@qq.com',13903871527,'在职','男','2018-06-08 09:57:37','2018-07-18 16:40:31'),(213,'j','e10adc3949ba59abbe56e057f20f883e','纳兰熬夜','人事部','CJGL','1453195240@qq.cm',18685124226,'在职','男','2018-07-02 17:15:15','2018-07-03 13:38:52'),(203,'ct','e10adc3949ba59abbe56e057f20f883e','陈涛','运营部','SYY0','1453195240@qq.cm',18685124226,'在职','男','2018-06-05 10:28:23','2018-07-04 09:41:33'),(201,'morris','e10adc3949ba59abbe56e057f20f883e','张凯翔','炎武','CJGL','morris@china-flame.cn',18618417735,'在职','男','2018-06-05 10:05:17',''),(202,'tao','e10adc3949ba59abbe56e057f20f883e','金铭','炎武','CJGL','1453195240@qq.cm',18685124226,'在职','女','2018-06-05 10:11:42','2018-07-18 09:24:59'),(204,'bm','E10ADC3949BA59ABBE56E057F20F883E','柏明','炎武','CJGL','18516558289@163.com',18516558289,'在职','男','2018-06-05 10:36:05','2018-07-18 14:33:45'),(214,'cooling','e10adc3949ba59abbe56e057f20f883e','cooling','运营部','YYJL','18593417932@163.com',18593417932,'在职','男','2018-07-10 16:59:00','2018-07-10 18:38:44');
+INSERT INTO `users` VALUES ('102',1,'ca1','E10ADC3949BA59ABBE56E057F20F883E','ca1','运营部','SYY0','18516551002@163.com','18516551002','在职','男','','2018-07-09 09:15:37',NULL),('103',2,'ca2','E10ADC3949BA59ABBE56E057F20F883E','ca2','运营部','SYY0','18516551003@163.com','18516551003','在职','男','','',NULL),('104',3,'opc1','E10ADC3949BA59ABBE56E057F20F883E','opc1','运营部','YYZY','18516551004@163.com','18516551004','在职','男','','2018-07-06 11:20:02',NULL),('105',4,'opc2','E10ADC3949BA59ABBE56E057F20F883E','opc2','运营部','YYZY','18516551005@163.com','18516551005','在职','男','','2018-06-14 15:31:49',NULL),('106',5,'opm1','E10ADC3949BA59ABBE56E057F20F883E','opm1','运营部','YYJL','18516551006@163.com','18516551006','在职','女','','2018-06-27 15:18:40',NULL),('107',6,'opm2','E10ADC3949BA59ABBE56E057F20F883E','opm2','运营部','YYJL','18516551007@163.com','18516551007','在职','女','','2018-06-27 15:36:18',NULL),('108',7,'opi1','E10ADC3949BA59ABBE56E057F20F883E','opi1','运营部','YYZJ','18516551009@163.com','18516551009','在职','女','','2018-06-27 15:36:38',NULL),('109',8,'opi2','E10ADC3949BA59ABBE56E057F20F883E','opi2','运营部','YYZJ','18516551008@163.com','18516551008','在职','女','','',NULL),('110',9,'opf1','E10ADC3949BA59ABBE56E057F20F883E','opf1','运营部','YYFZ','18516551010@163.com','18516551010','在职','男','','2018-06-27 15:37:00',NULL),('111',10,'opf2','E10ADC3949BA59ABBE56E057F20F883E','opf2','运营部','YYFZ','18516551011@163.com','18516551011','在职','男','','',NULL),('112',11,'mac1','E10ADC3949BA59ABBE56E057F20F883E','mac1','市场部','SCZY','18516551012@163.com','18516551012','在职','男','','2018-06-08 09:12:17',NULL),('113',12,'mac2','E10ADC3949BA59ABBE56E057F20F883E','mac2','市场部','SCZY','18516551013@163.com','18516551013','在职','男','','',NULL),('114',13,'mam1','E10ADC3949BA59ABBE56E057F20F883E','mam1','市场部','SCJL','18516551014@163.com','18516551014','在职','男','','2018-06-05 14:18:53',NULL),('115',14,'mam2','E10ADC3949BA59ABBE56E057F20F883E','mam2','市场部','SCJL','18516551015@163.com','18516551015','在职','女','','',NULL),('116',15,'mai1','E10ADC3949BA59ABBE56E057F20F883E','mai1','市场部','SCZJ','18516551015@163.com','18516551016','在职','男','','2018-06-05 13:56:56',NULL),('117',16,'mai2','E10ADC3949BA59ABBE56E057F20F883E','mai2','市场部','SCZJ','18516551016@163.com','18516551017','在职','女','','',NULL),('118',17,'maf1','E10ADC3949BA59ABBE56E057F20F883E','maf1','市场部','SCFZ','18516551017@163.com','18516551018','在职','女','','2018-06-05 13:58:15',NULL),('119',18,'maf2','E10ADC3949BA59ABBE56E057F20F883E','maf2','市场部','SCFZ','18516551018@163.com','18516551019','在职','女','','',NULL),('120',19,'fac1','E10ADC3949BA59ABBE56E057F20F883E','fac1','财务部','CWZY','18516551019@163.com','18516551020','在职','女','','',NULL),('121',20,'fac2','E10ADC3949BA59ABBE56E057F20F883E','fac2','财务部','CWZY','18516551020@163.com','18516551021','在职','女','','',NULL),('122',21,'fam1','E10ADC3949BA59ABBE56E057F20F883E','fam1','财务部','CWJL','18516551021@163.com','18516551022','在职','男','','2018-06-27 15:36:27',NULL),('123',22,'fam2','E10ADC3949BA59ABBE56E057F20F883E','fam2','财务部','CWJL','18516551022@163.com','18516551023','在职','男','','',NULL),('124',23,'fai1','E10ADC3949BA59ABBE56E057F20F883E','fai1','财务部','CWZJ','18516551023@163.com','18516551024','在职','男','','2018-06-27 15:36:49',NULL),('125',24,'fai2','E10ADC3949BA59ABBE56E057F20F883E','fai2','财务部','CWZJ','18516551024@163.com','18516551025','在职','男','','',NULL),('126',25,'faf1','E10ADC3949BA59ABBE56E057F20F883E','faf1','财务部','CWFZ','18516551024@163.com','18516551026','在职','男','','2018-06-27 15:37:08',NULL),('127',26,'faf2','E10ADC3949BA59ABBE56E057F20F883E','faf2','财务部','CWFZ','18516551025@163.com','18516551027','在职','男','','',NULL),('128',27,'hrc1','E10ADC3949BA59ABBE56E057F20F883E','hrc1','人事部','RSZY','18516551026@163.com','18516551028','在职','男','','2018-05-30 15:59:28',NULL),('129',28,'hrc2','E10ADC3949BA59ABBE56E057F20F883E','hrc2','人事部','RSZY','18516551027@163.com','18516551029','在职','女','','',NULL),('130',29,'hrm1','E10ADC3949BA59ABBE56E057F20F883E','hrm1','人事部','RSJL','18516551028@163.com','18516551030','在职','女','','',NULL),('131',30,'hrm2','E10ADC3949BA59ABBE56E057F20F883E','hrm2','人事部','RSJL','18516551029@163.com','18516551031','在职','女','','',NULL),('132',31,'ceo','E10ADC3949BA59ABBE56E057F20F883E','ceo','总经理室','ZJL0','18516551030@163.com','18516551032','在职','男','','2018-06-27 15:37:17',NULL),('201',32,'morris','e10adc3949ba59abbe56e057f20f883e','张凯翔','炎武','CJGL','morris@china-flame.cn','18618417735','在职','男','2018-06-05 10:05:17','',NULL),('202',33,'tao','e10adc3949ba59abbe56e057f20f883e','金铭','炎武','CJGL','1453195240@qq.cm','18685124226','在职','女','2018-06-05 10:11:42','2018-07-18 09:24:59',NULL),('203',34,'ct','e10adc3949ba59abbe56e057f20f883e','陈涛','运营部','SYY0','1453195240@qq.cm','18685124226','在职','男','2018-06-05 10:28:23','2018-07-04 09:41:33',NULL),('204',35,'bm','E10ADC3949BA59ABBE56E057F20F883E','柏明','炎武','CJGL','18516558289@163.com','18516558289','在职','男','2018-06-05 10:36:05','2018-07-18 14:33:45',NULL),('205',36,'ym1','e10adc3949ba59abbe56e057f20f883e','test1','运营部','TEST','892494300@qq.com','13903871527','在职','男','2018-06-05 15:35:11','2018-07-01 20:59:54',NULL),('208',37,'ym','e10adc3949ba59abbe56e057f20f883e','杨沫','炎武','CS4','892494300@qq.com','13903871527','在职','男','2018-06-08 09:57:37','2018-07-18 16:40:31',NULL),('209',38,'lm','C4CA4238A0B923820DCC509A6F75849B','刘梦','炎武','CJGL','18516558289@163.com','18516558289','在职','女','2018-06-08 16:39:57','2018-07-18 15:07:04',NULL),('213',39,'j','e10adc3949ba59abbe56e057f20f883e','纳兰熬夜','人事部','CJGL','1453195240@qq.cm','18685124226','在职','男','2018-07-02 17:15:15','2018-07-03 13:38:52',NULL),('214',40,'cooling','e10adc3949ba59abbe56e057f20f883e','cooling','运营部','YYJL','18593417932@163.com','18593417932','在职','男','2018-07-10 16:59:00','2018-07-10 18:38:44',NULL),('215',41,'cooling1','e10adc3949ba59abbe56e057f20f883e','cooling1','人事部','CJGL','18516551018@163.com','18516551019','在职','男','2018-07-10 17:00:59','',NULL),('217',42,'cg2','e10adc3949ba59abbe56e057f20f883e','cg2','人事部','CJGL','892494300@qq.com','13903871527','在职','男','2018-07-24 13:38:37','',NULL),('1f70ba49-4278-49b4-b867-de93696acfa2',64,'1111','b59c67bf196a4758191e42f76670ceba','111','','SYY0','','13111111111','在职','男','2018-08-17 16:22:37','2018-08-17 16:22:37','d42cea61-21f5-4a91-8ee1-c63fc9d2a1af'),('51ee482b-437f-4ac2-8e8d-5cf87294a2a0',65,'2222333','b0baee9d279d34fa1dfd71aadb908c3f','1111','','SYY0','','13311111111','在职','男','2018-08-17 16:35:44','2018-08-17 16:35:44','a9a0b04c-d786-4a88-a43f-a9c7f896fb47'),('f769f3db-be17-44c2-9c23-957b1b2550fa',66,'1323','934b535800b1cba8f96a5d72f72f1611','2222','','SYY0','','13311111111','在职','男','2018-08-17 17:32:08','2018-08-17 17:32:08','http://127.0.0.1:9900/2083e96a-8eef-4335-93fa-f7fdf648f8bf');
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
--- Dumping events for database 'keeper'
+-- Current Database: `orders`
 --
 
+CREATE DATABASE /*!32312 IF NOT EXISTS*/ `orders` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
+
+USE `orders`;
+
 --
--- Dumping routines for database 'keeper'
+-- Table structure for table `item`
 --
+
+DROP TABLE IF EXISTS `item`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `item` (
+  `NO` bigint(32) NOT NULL AUTO_INCREMENT,
+  `CLIENTID` bigint(32) DEFAULT NULL,
+  `SHARENO` bigint(32) DEFAULT NULL,
+  `STATE` varchar(8) DEFAULT NULL COMMENT '待支付,支付中,支付超时,支付失败(待支付),支付成功',
+  `AMOUNT` float DEFAULT NULL,
+  `CREATETIME` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`NO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `item`
+--
+
+LOCK TABLES `item` WRITE;
+/*!40000 ALTER TABLE `item` DISABLE KEYS */;
+/*!40000 ALTER TABLE `item` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `share`
+--
+
+DROP TABLE IF EXISTS `share`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+ SET character_set_client = utf8mb4 ;
+CREATE TABLE `share` (
+  `NO` bigint(32) NOT NULL AUTO_INCREMENT,
+  `POSTERID` char(37) DEFAULT NULL,
+  `USERID` char(37) DEFAULT NULL COMMENT 'userid发起的,此时FROMID为userid',
+  `ORIGID` char(37) DEFAULT NULL COMMENT 'clientid发起的,此时FROMID为clientid',
+  `FROMID` char(37) DEFAULT NULL COMMENT 'client,user每发起分享一次,记录一次fromid,toid',
+  `TOID` char(37) DEFAULT NULL,
+  `CREATETIME` varchar(32) DEFAULT NULL,
+  PRIMARY KEY (`NO`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `share`
+--
+
+LOCK TABLES `share` WRITE;
+/*!40000 ALTER TABLE `share` DISABLE KEYS */;
+/*!40000 ALTER TABLE `share` ENABLE KEYS */;
+UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
@@ -150,4 +335,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-13 19:46:54
+-- Dump completed on 2018-08-20  3:36:48
