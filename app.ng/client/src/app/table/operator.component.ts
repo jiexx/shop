@@ -16,7 +16,7 @@ export class OperatorComponent implements OnInit {
     @ViewChild('dialog') dialog: ModalDirective;
     @ViewChild(ImageComponent) image: ImageComponent;
 
-    row = {};
+    _row = {};
 
 
 
@@ -29,19 +29,19 @@ export class OperatorComponent implements OnInit {
     ngOnInit() {
     }
 
-    _valid(row) {
+    _valid(_row) {
         var isvalid = true;
         for(var i in this.cols) {
             let col = this.cols[i];
             if(col && col.options) {
                 if( col.options.password) {
-                    row[col.name] = md5(row[col.name]);
+                    _row[col.name] = md5(_row[col.name]);
                 }else if(col.options.image){
-                    row[col.name] = {IMGS:this.image.get()};
+                    _row[col.name] = {IMGS:this.image.get()};
                 }
                 if(col.options.valid) {
                     var valid = <Function>col.options.valid;
-                    var result = valid.call(this, row[col.name], col.alias);
+                    var result = valid.call(this, _row[col.name], col.alias);
                     if(result.no) {
                         isvalid = false;
                         this.showMessage(result.info);
@@ -61,34 +61,34 @@ export class OperatorComponent implements OnInit {
 
     selected(kvlist: any[], colname:string,value:any){
         //var kv = kvlist.find(kv => { return kv.V === value});
-        this.row[colname] = value.id ? value.id: '';;
+        this._row[colname] = value.id ? value.id: '';;
     }
     
     add() {
-        this.row = {};
+        this._row = {};
         for(var i in this.cols){
             var title = this.cols[i].name;  
-            this.row[title] = '';
+            this._row[title] = '';
         }
         this.header = '添加';
         this.modal.show();
         this._next = this.parent ? this.parent.onAdd : null;
         this._status = 'add';
     };
-    delete(row) {
-        this.row = row;
+    delete(_row) {
+        this._row = _row;
         this.info = '确定删除?';
         this.noinfobtn = true;
         this.dialog.show();
         this._next = this.parent ? this.parent.onDelete : null;
         this._status = 'del';
     }
-    update(row) {
+    update(_row) {
         this.header = '修改';
-        this.row = {};
+        this._row = {};
         for(var i in this.cols){
             var title = this.cols[i].name;
-            this.row[title] = row[title];
+            this._row[title] = _row[title];
         }
         this.modal.show();
         this._next = this.parent ? this.parent.onUpdate : null;
@@ -96,8 +96,8 @@ export class OperatorComponent implements OnInit {
     }
     confirm(){
         if(this._next) {
-            if(this._status == 'del' || this._valid(this.row)){
-                this._next.call(this.parent,this.row);
+            if(this._status == 'del' || this._valid(this._row)){
+                this._next.call(this.parent,this._row);
                 this._next = null;
             }else {
                 this.modal.hide();

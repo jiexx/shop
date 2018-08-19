@@ -1,6 +1,6 @@
 {
     "start": {
-        "sql": "INSERT INTO wflow.tasks(typeop, userid, currjob, state, objid, createtime)VALUES(?, ?, ?, ?, 'PENDING',now()) ;",
+        "sql": "INSERT INTO wflow.tasks(typeop, userid, currjob, state, objid, CREATETIME)VALUES(?, ?, ?, ?, 'PENDING',now()) ;",
         "params": ["typeop", "userid", "job", "objid"]
     }
 }

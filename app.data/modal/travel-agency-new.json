@@ -1,6 +1,0 @@
-{
-    "agency": {
-        "sql": " INSERT INTO travel.AGENCY(loginname,pwd,name,subagency,department,area,contact,mobile,personid,email,clearing,starttime,endtime,accounttype,bank,bankno,License,contract,card)VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?);",
-        "params": ["loginname","pwd","name","subagency","department","area","contact","mobile","personid","email","clearing","starttime","endtime","accounttype","bank","bankno","License","contract","card"]
-    }
-}

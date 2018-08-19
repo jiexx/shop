@@ -18,16 +18,9 @@ export class KeeperTable extends TableComponent{
         new Column('TEL',         '电话'    , true, 1, {valid:Column.isnphone }),
         new Column('STATUS',      '状态'    , true, 3, {valid:Column.isnull, select:[{id:'在职',text:'在职'},{id:'离职',text:'离职'}]}),
         new Column('SEX',         '性别'    , true, 3, {valid:Column.isnull, select:[{id:'男',text:'男'},{id:'女',text:'女'}]}),
-        new Column('CREATTIME',   '创建时间', true, 0 ),
+        new Column('CREATETIME',   '创建时间', true, 0 ),
         new Column('UPDATETIME',  '最近更新', true, 0 ),
     ];
-    _toList(kv) {
-        var list = [];
-        for(var i in kv) {
-            list.push(kv[i].V);
-        }
-        return list;
-    };
     load(d: any): any {
         var that = this;
         super.load({url:'http://localhost:8999/keeper/user/query?version=2',cols:this.cols}).subscribe(result => {

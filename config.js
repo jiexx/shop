@@ -1,6 +1,7 @@
  exports.IMG_HOST = "127.0.0.1";
  exports.IMG_HOST_PORT = "9900";
  exports.IMG_HOST_DIR = "./images";
+ exports.HOST_DIR = {"html":'./files', "htmlimg":'./htmlimgs'};
  exports.IMG_URL = 'http://'+this.IMG_HOST+':'+this.IMG_HOST_PORT +'/';
  exports.IMG_HOST_FDFS = false;
  exports.LOCAL_HOST = "192.168.1.214"; //"http://101.37.21.172:80";

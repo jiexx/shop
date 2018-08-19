@@ -1,6 +1,6 @@
 {
     "newuser": {
-        "sql": "INSERT INTO keeper.users(username,userpwd,employeename,department,job,email,tel,status,sex,CREATTIME,UPDATETIME,ID)VALUES(?,?,?,?,?,?,?,?,?,now(),now(),#i);",
+        "sql": "INSERT INTO keeper.users(username,userpwd,employeename,department,job,email,tel,status,sex,CREATETIME,UPDATETIME,ID)VALUES(?,?,?,?,?,?,?,?,?,now(),now(),#i);",
         "params": ["USERNAME", "USERPWD", "EMPLOYEENAME", "DEPARTMENT", "JOB", "EMAIL", "TEL", "STATUS", "SEX"],
         "AVATAR": {"sql": "UPDATE keeper.users SET avatar=? WHERE no = ?;",	"params":["IMGS","insertId"], "files":["IMGS"], "findkey": "insertId"}
     }

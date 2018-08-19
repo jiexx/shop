@@ -1,0 +1,3 @@
+{
+    "item": { "sql": "select * from PRODUCT.ITEM where id=? or no=?;", "params": ["ID","NO"] }
+}

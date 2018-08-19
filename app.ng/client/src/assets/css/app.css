@@ -2,7 +2,7 @@
 
 
 * {
-font-size: 0.9rem  !important;
+/* font-size: 0.9rem  !important; */
 }
 
 body {
@@ -16,9 +16,15 @@ body {
     text-overflow: ellipsis;
 }
 
-[class^="dropdown-menu"],[class*="dropdown-menu"] {
-left:auto !important;
+.card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
 
+[class^="dropdown-menu"],[class*="dropdown-menu"] {
+    left:auto !important;
+    top:inherit !important;
 }
 .ui-select-choices{
     display:block;

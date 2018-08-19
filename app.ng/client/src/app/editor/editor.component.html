@@ -1,0 +1,37 @@
+﻿<div class="container">
+    <br>
+    <br>
+    <div class="card-columns">
+        <div class="card">
+            <div class="card-body" style="min-height: 500px">
+                <span class="card-title text-muted">预览</span>
+                <hr>
+                <p class="card-text" [innerHTML]="html"></p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body">
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <span class="btn text-muted ">编辑</span>
+                        </div>
+                        <div class="col">
+                            <div class="btn btn-primary float-right" (click)="save()">
+                                <em class="glyphicon glyphicon-user "></em>发布
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br>
+                <p class="card-text">
+                    <quill-editor [style]="{'min-height': '300px',height:'auto'}" (onEditorCreated)="setFocus($event)" (onContentChanged)="logChange($event);"></quill-editor>
+                </p>
+            </div>
+        </div>
+    </div>
+    <operator [cols]="cols"  [parent]="that" ></operator>
+    <br>
+    <br>
+    <br>
+</div>

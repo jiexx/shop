@@ -27,47 +27,73 @@ app.post('/upload', upload.array(), function (req, res) {
     var data = req.body;
     var imageBuffer = base64.decode(data.pic);
     var fd = uuidv4();
-    fs.writeFile(config.IMG_HOST_DIR+'/'+fd, imageBuffer.data, function(err,written){
-        if(!err){
-            res.json({ code: 'OK', msg: fd, data: null });
-            console.log(day.full(), 'OK', fd);
-        }else {
-            res.json({ code: 'ERR', msg: '写失败', data: null });
-            console.log(day.full(), err);
-        }
-    });
+    if(!config.HOST_DIR[String(imageBuffer.type)]) {
+        fs.writeFile(config.IMG_HOST_DIR+'/'+fd, imageBuffer.data, function(err,written){
+            if(!err){
+                res.json({ code: 'OK', msg: fd, data: null });
+                console.log(day.full(), 'OK', fd);
+            }else {
+                res.json({ code: 'ERR', msg: '写失败', data: null });
+                console.log(day.full(), err);
+            }
+        });
+    }else {
+        fs.writeFile(config.HOST_DIR[String(imageBuffer.type)]+'/'+fd, imageBuffer.data, function(err,written){
+            if(!err){
+                res.json({ code: 'OK', msg: fd+'?type='+imageBuffer.type, data: null });
+                console.log(day.full(), 'OK', fd);
+            }else {
+                res.json({ code: 'ERR', msg: '写失败', data: null });
+                console.log(day.full(), err);
+            }
+        });
+    }
+    
 
 });
 
 app.get('/:img', upload.array(), function (req, res) {
 
-    var img = config.IMG_HOST_DIR+'/'+req.params.img;
-    if(!fs.existsSync(img)){
-        var matches = img.match(/^([^_]+)_([^x]+)x(.+)$/);
-        if (!matches || matches.length !== 4 || !fs.existsSync(matches[1])) {
-            res.json({ code: 'ERR', msg: '文件不存在', data: null });
-        }else {
-            var w = parseInt(matches[2]), h = parseInt(matches[3]);
-            sharp(matches[1]).resize(w, h)
-            .toFile(img, (err, info) => {
-                if(!err){
-                    res.header("Content-Type", "image/gif");
-                    res.sendFile(img,{ root: __dirname });
-                }else{
-                    res.json({ code: 'ERR', msg: '文件不存在', data: null });
-                }
-            });
+    if(!req.query.type || req.query.type == 'htmlimg') {
+        var img = req.query.type == 'htmlimg' ?  config.HOST_DIR[String(req.query.type)]+'/'+req.params.img : config.IMG_HOST_DIR+'/'+req.params.img;
+        if(!fs.existsSync(img)){
+            var matches = img.match(/^([^_]+)_([^x]+)x(.+)$/);
+            if (!matches || matches.length !== 4 || !fs.existsSync(matches[1])) {
+                res.json({ code: 'ERR', msg: '文件不存在', data: null });
+            }else {
+                var w = parseInt(matches[2]), h = parseInt(matches[3]);
+                sharp(matches[1]).resize(w, h)
+                .toFile(img, (err, info) => {
+                    if(!err){
+                        res.header("Content-Type", "image/gif");
+                        res.sendFile(img,{ root: __dirname });
+                    }else{
+                        res.json({ code: 'ERR', msg: '文件不存在', data: null });
+                    }
+                });
+            }
+        }else{
+            res.header("Content-Type", "image/gif");
+            res.sendFile(img,{ root: __dirname });
         }
     }else{
-        res.header("Content-Type", "image/gif");
-        res.sendFile(img,{ root: __dirname });
+        var file = config.HOST_DIR[String(req.query.type)];
+        if(!fs.existsSync(img)){
+            res.json({ code: 'ERR', msg: '文件不存在', data: null });
+        }else{
+            res.header("Content-Type", "html/txt");
+            res.sendFile(file,{ root: __dirname });
+        }
     }
+    
 });
-
 
 
 var server = app.listen(config.IMG_HOST_PORT, function() {
 	mkdirp(config.IMG_HOST_DIR, function(err) { 
+        console.log(day.full(),' DIR ERR', err);
+    });
+    mkdirp(config.FILE_HOST_DIR, function(err) { 
         console.log(day.full(),' DIR ERR', err);
     });
 	var host = server.address().address;
