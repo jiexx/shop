@@ -6,10 +6,36 @@ import { config } from '../../../../../config.js';
 import { resolve, reject } from 'q';
 import { Column } from '../table/column';
 import { OperatorComponent } from '../table/operator.component';
+import * as QuillNamespace from 'quill';
+const Quill: any = QuillNamespace;
+const BlockEmbed = Quill.import('blots/block/embed');
+class CustomEmbed extends BlockEmbed {
+    static create(paramValue) {
+        let node = super.create();
+        node.innerHTML = paramValue;
+        //node.setAttribute('contenteditable', 'false');
+        //node.addEventListener('click', CustomEmbed.onClick);
+        return node;
+    }
+
+    static value(node) {
+        return node.innerHTML;
+    }
+}
+/* CustomEmbed.onClick = function(){
+    //do something
+}*/
+CustomEmbed.blotName = 'custom-embed';
+CustomEmbed.className = 'custom-embed';
+CustomEmbed.tagName = 'custom-embed';
+Quill.register({
+    'formats/custom-embed': CustomEmbed
+});
 
 @Component({
     templateUrl: './editor.component.html'
 })
+
 export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
     protected @ViewChild(OperatorComponent) op: OperatorComponent;
 
@@ -34,10 +60,10 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
     ngAfterViewInit(){
         
     }
-    showImageUI() {
-        var input = this.elRef.nativeElement.querySelector('input[type=file]');
+    selectLocalImage(that: any) {
+        var input = document.querySelector('input[type=file]') as HTMLInputElement;
         if(!input) {
-            this.elRef.nativeElement.createElement("input");
+            input = document.createElement("input");
             input.setAttribute("type", "file");
         }
         input.click();
@@ -61,12 +87,14 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
     insertToEditor(url) {
         // push image url to editor.
         const range = this._editorInstance.getSelection();
-        this._editorInstance.insertEmbed(range.index, "image", url);
+        this._editorInstance.insertEmbed(range.index, "custom-embed", "<img src='"+url+"' class='img-fluid'>");
     }
     setFocus(editorInstance) {
         editorInstance.focus();
         let toolbar = editorInstance.getModule('toolbar');
-        toolbar.addHandler('image', this.showImageUI);
+        toolbar.addHandler('image', () => {
+            this.selectLocalImage(this);
+          });
         this._editorInstance = editorInstance;
     }
     logChange($event: any) {
@@ -80,7 +108,7 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
                 .subscribe(result => {
                     var r: any = result;
                     if (r && r.code == 'OK') {
-                        resolve(r.msg);
+                        resolve('http://localhost:9900/'+r.msg);
                     }else {
                         reject();
                     }

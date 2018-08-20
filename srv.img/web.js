@@ -31,7 +31,7 @@ app.post('/upload', upload.array(), function (req, res) {
         fs.writeFile(config.IMG_HOST_DIR+'/'+fd, imageBuffer.data, function(err,written){
             if(!err){
                 res.json({ code: 'OK', msg: fd, data: null });
-                console.log(day.full(), 'OK', fd);
+                console.log(day.full(), 'OK upload', fd);
             }else {
                 res.json({ code: 'ERR', msg: '写失败', data: null });
                 console.log(day.full(), err);
@@ -41,7 +41,7 @@ app.post('/upload', upload.array(), function (req, res) {
         fs.writeFile(config.HOST_DIR[String(imageBuffer.type)]+'/'+fd, imageBuffer.data, function(err,written){
             if(!err){
                 res.json({ code: 'OK', msg: fd+'?type='+imageBuffer.type, data: null });
-                console.log(day.full(), 'OK', fd);
+                console.log(day.full(), 'OK upload', fd);
             }else {
                 res.json({ code: 'ERR', msg: '写失败', data: null });
                 console.log(day.full(), err);
@@ -77,11 +77,11 @@ app.get('/:img', upload.array(), function (req, res) {
             res.sendFile(img,{ root: __dirname });
         }
     }else{
-        var file = config.HOST_DIR[String(req.query.type)];
-        if(!fs.existsSync(img)){
+        var file = config.HOST_DIR[String(req.query.type)]+'/'+req.params.img;
+        if(!fs.existsSync(file)){
             res.json({ code: 'ERR', msg: '文件不存在', data: null });
         }else{
-            res.header("Content-Type", "html/txt");
+            res.header('Content-Type', 'text/html');
             res.sendFile(file,{ root: __dirname });
         }
     }
@@ -93,9 +93,12 @@ var server = app.listen(config.IMG_HOST_PORT, function() {
 	mkdirp(config.IMG_HOST_DIR, function(err) { 
         console.log(day.full(),' DIR ERR', err);
     });
-    mkdirp(config.FILE_HOST_DIR, function(err) { 
-        console.log(day.full(),' DIR ERR', err);
-    });
+    for(var i in config.HOST_DIR) {
+        mkdirp(config.HOST_DIR[i], function(err) { 
+            console.log(day.full(),' DIR ERR', err);
+        });
+    }
+    
 	var host = server.address().address;
 	var port = server.address().port;
 	console.log(day.full(),' RUNNING http://%s:%s', host, port);

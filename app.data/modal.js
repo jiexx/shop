@@ -432,7 +432,7 @@ var roger = {
                     if (d) {
                         if (Array == d.constructor) {
                             for (var j in d) {
-                                if (d[j].indexOf('data:image') > -1) {
+                                if (d[j].indexOf('data:') > -1) {
                                     files.push({ base64: d[j], index: pos, row: j });
                                 } else {
                                     left.push({ fileid: d[j], index: pos, row: j });
@@ -441,7 +441,7 @@ var roger = {
                             }
                         } else if ('string' == typeof d) {
                             //files.push(d);
-                            if (d.indexOf('data:image') > -1) {
+                            if (d.indexOf('data:') > -1) {
                                 files.push({ base64: d, index: pos, row: 0 });
                             } else {
                                 left.push({ fileid: d, index: pos, row: 0 });

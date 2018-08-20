@@ -3,7 +3,7 @@ export class Column {
         public name: string,
         public alias: string, 
         public visible: boolean,
-        public type: number, //0-invisible; 1-string; 2-password; 3-select; 5-image; 6-disable
+        public type: number, //0-invisible; 1-string; 2-password; 3-select; 5-image; 6-number
         public options: any = null
     ) {}
 

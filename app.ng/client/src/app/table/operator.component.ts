@@ -7,7 +7,8 @@ import { ImageComponent } from './image.component';
 
 @Component({
     selector: 'operator',
-    templateUrl: './operator.component.html'
+    templateUrl: './operator.component.html',
+    // styleUrls: ['../../assets/css/bs-datepicker.css']
 })
 export class OperatorComponent implements OnInit {
     @Input() cols: Array<Column>; 
@@ -17,7 +18,6 @@ export class OperatorComponent implements OnInit {
     @ViewChild(ImageComponent) image: ImageComponent;
 
     _row = {};
-
 
 
     header: string = '';

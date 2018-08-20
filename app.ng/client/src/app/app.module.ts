@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
-import { BsDropdownModule,PaginationModule,ModalModule  } from 'ngx-bootstrap';
+import { BsDropdownModule,PaginationModule,ModalModule,BsDatepickerModule   } from 'ngx-bootstrap';
 import { SelectModule } from 'ng2-select';
 import { QuillModule } from 'ngx-quill';
 import { AppComponent } from './app.component';
@@ -40,7 +40,8 @@ import { PosterEditor } from './product/poster.editor';
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
     SelectModule,
-    QuillModule
+    QuillModule,
+    BsDatepickerModule.forRoot()
   ],
   entryComponents: [ 
     ProductTable,
