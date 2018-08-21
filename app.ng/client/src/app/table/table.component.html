@@ -18,7 +18,7 @@
                     <tr *ngFor="let row of model; let j = index">
                         <!-- <ng-container *ngFor="let cell of row | keyvalue; let i = index"> -->
                         <ng-container *ngFor="let col of cols">
-                            <td *ngIf="col.visible && col.type != 5">{{row[col.name]}}</td>
+                            <td *ngIf="col.visible && col.type != 5" class="text-truncate">{{row[col.name]}}</td>
                             <td *ngIf="col.type == 5"><img [src]="row[col.name]+col.options.size" class="rounded-circle"></td>
                         </ng-container>
                         <td class="btn-group">
