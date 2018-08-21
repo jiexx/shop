@@ -52,7 +52,7 @@ export class PosterEditor extends EditorComponent{
             {type : 'html'}
         ); 
         var a = new FileReader();
-        a.onload = function(e) {
+        a.onload = (e:any) => {
             console.log(e.target.result);
             that.row['FD'] = {HTML:e.target.result};
             var data = {newposter:that.row};

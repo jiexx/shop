@@ -1,10 +1,6 @@
 ﻿import { Component, ChangeDetectorRef, Input,AfterViewInit, OnInit,ViewChild,ElementRef } from '@angular/core';
-import { ModalDirective } from 'ngx-bootstrap/modal';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DclComponent } from '../_helper/dcl.component';
-import { config } from '../../../../../config.js';
-import { resolve, reject } from 'q';
-import { Column } from '../table/column';
 import { OperatorComponent } from '../table/operator.component';
 import * as QuillNamespace from 'quill';
 const Quill: any = QuillNamespace;
@@ -37,7 +33,7 @@ Quill.register({
 })
 
 export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
-    protected @ViewChild(OperatorComponent) op: OperatorComponent;
+    @ViewChild(OperatorComponent) op: OperatorComponent;
 
   
     html:any = null;
@@ -73,7 +69,7 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
             // file type is only image.
             if (/^image\//.test(file.type)) {
                 var reader = new FileReader();
-                reader.onloadend = (evt) =>{
+                reader.onloadend = (evt:any) =>{
                     this.saveToServer(evt.target.result)
                     .then(url =>{
                         this.insertToEditor(url);

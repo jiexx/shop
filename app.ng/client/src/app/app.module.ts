@@ -5,8 +5,8 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
 import { BsDropdownModule,PaginationModule,ModalModule,BsDatepickerModule   } from 'ngx-bootstrap';
-import { SelectModule } from 'ng2-select';
 import { QuillModule } from 'ngx-quill';
+import { SelectModule } from 'ng2-select';
 import { AppComponent } from './app.component';
 import { routing }        from './app.routing';
 import { BusService } from './_service/bus.service';
@@ -16,7 +16,6 @@ import { ContentWrapper } from './table/Content.wrapper';
 import { NavbarComponent } from './navbar/navbar.component';
 import { OperatorComponent } from './table/operator.component';
 import { ImageComponent } from './table/image.component';
-import { EditorComponent } from './editor/editor.component';
 import { PosterEditor } from './product/poster.editor';
 
 
@@ -39,9 +38,9 @@ import { PosterEditor } from './product/poster.editor';
     HttpClientModule,
     BsDropdownModule.forRoot(),
     ModalModule.forRoot(),
-    SelectModule,
     QuillModule,
-    BsDatepickerModule.forRoot()
+    BsDatepickerModule.forRoot(),
+    SelectModule
   ],
   entryComponents: [ 
     ProductTable,

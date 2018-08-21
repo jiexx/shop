@@ -67,7 +67,7 @@ export class ImageComponent implements OnInit {
         for(var i in files) {
           if (files[i] && files[i].type && files[i].type.indexOf('image') > -1) {
             var reader = new FileReader();
-            reader.onloadend = function (evt) {
+            reader.onloadend = function (evt:any) {
                 var img = new Image();
                 img.src = evt.target.result;
                 var ctx = canvas.getContext("2d");

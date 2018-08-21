@@ -1,7 +1,6 @@
 ﻿import { Component, ViewChild, Input, OnInit } from '@angular/core';
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Column } from './column';
-import { SelectModule } from 'ng2-select';
 import { md5 } from '../_helper/md5';
 import { ImageComponent } from './image.component';
 
