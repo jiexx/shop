@@ -93,8 +93,8 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
           });
         this._editorInstance = editorInstance;
     }
-    logChange($event: any) {
-        this.html = $event.html;
+    logChange($event: any, html:string) {
+        this.html = html != '' ? html : $event.html
         //console.log($event);
     }
     saveToServer(base64){

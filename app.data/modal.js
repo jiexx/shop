@@ -48,7 +48,7 @@ var pool = mysql.createPool({
 function doSql(funcArgu, onFinish) {
     pool.getConnection(function(err, conn) {
         if (err) {
-            ////console.log(err);
+            console.log(err);
             onFinish(true);
             return;
         }

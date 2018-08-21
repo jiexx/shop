@@ -25,6 +25,15 @@ export class PosterEditor extends EditorComponent{
             this.ref.detectChanges();
         }
     };
+    logChange($event: any, html: string) {
+        var html = $event.html
+            +'<p><b>注意事项:</b></p>'
+            +'<p>在'+this.row['EXP']+'期间，发起人推荐分享的海报成单后，将收到一定数额的红包；</p>'
+            +'<p>例如，小张通过微信/微博等社交媒体推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</p>'
+            +'<p>如果好友圈再推荐分享，成单了10笔，那么小张将收到50块红包。</p>'
+        super.logChange($event, html);
+        //console.log($event);
+    }
     load(d: any): any {
         if(!d){
             return;

@@ -18,6 +18,7 @@
 --
 -- Current Database: `product`
 --
+ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123$%^'
 
 CREATE DATABASE /*!32312 IF NOT EXISTS*/ `product` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci */;
 
@@ -68,7 +69,7 @@ CREATE TABLE `poster` (
   `TITLE` varchar(64) DEFAULT NULL,
   `PERSONNUMREQ` int(11) DEFAULT NULL COMMENT '成单人数到达后给userid通知发货',
   `STATE` varchar(8) DEFAULT NULL COMMENT '待成单,已成单,已结束(到期,已发货)',
-  `EXP` varchar(32) DEFAULT NULL,
+  `EXP` varchar(64) DEFAULT NULL,
   `FD` varchar(128) DEFAULT NULL,
   `CREATETIME` varchar(32) DEFAULT NULL,
   `UPDATETIME` varchar(32) DEFAULT NULL,
