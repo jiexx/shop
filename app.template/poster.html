@@ -7,20 +7,19 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Agency - Start Bootstrap Theme</title>
+    <title>51推</title>
 
-    <!-- Bootstrap core CSS -->
+    <script src="./poster/jquery-3.2.1.slim.min.js"></script>
+    <script src="./poster/popper.min.js"></script>
+    <script src="./poster/bootstrap.min.js"></script>
+	<script src="./poster/clipboard.min.js"></script>
     <link href="./poster/bootstrap.min.css" rel="stylesheet">
-
-    <!-- Custom fonts for this template -->
     <link href="./poster/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- Custom styles for this template -->
     <link href="./poster/agency.min.css" rel="stylesheet">
 
   </head>
 
-  <body id="page-top">
+  <body>
 
     <!-- Header -->
     <header class="masthead">
@@ -37,23 +36,43 @@
       <div class="container">
         <div>
           对于顾家的男人来说，梦想可能就是“老婆、孩子、热炕头”；而对于需要每天工作、为事业拼搏的人们来说，最大的梦想无非就是“事儿少、钱多、离家近”。不过事情总没有两全其美，梦想也终归只是梦想……
-        http://www.sohu.com/a/39270612_105527
+        http://www.sohu.com/a/39270612_105527  https://www.zhihu.com/question/39182675
 		</div>
 		
 		
 		<p></p><div><form action="http://localhost:8999/buy"><button type="button" class="btn btn-danger btn-block">购买</button></form></div><p></p>
-        <p></p><div><form action="http://localhost:8999/share"><button type="button" class="btn btn-primary btn-block">推荐</button></form></div><p></p>
+        <p></p><div><input id="info" type="text" value="《LuPS0389cDX《" class="hidden" readonly><button data-clipboard-action="copy" data-clipboard-target="#info" type="button" class="btn btn-primary btn-block" >推荐</button></div><p></p>
         <p><b>推荐规则:</b></p>
-        <div class="small">在'+this.row['EXP']+'期间，发起人推荐分享的海报成单后，将收到一定数额的红包；</div>
-        <div class="small">例如，小张通过微信/微博等社交媒体推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</div>
-        <div class="small">如果好友圈再推荐分享，成单了10笔，那么小张将收到50块红包。</div>
+        <div class="small">在'+this.row['EXP']+'期间，发起人推荐给好友成单后，将收到一定数额的红包；</div>
+        <div class="small">例如，小张通过微信/短信等推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</div>
+        <div class="small">如果好友圈再推荐分享，成单了10笔，那么小张将收到50块推荐红包。</div>
       </div>
     </section>
-
-
-	
-
-  
-
-
+	<div class="modal fade" id="messgebox" tabindex="-1" role="dialog" >
+	  <div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  <div class="modal-header">
+			<h5 class="modal-title">推荐信息已复制</h5>
+			<button type="button" class="close" >
+			  <span aria-hidden="true">&times;</span>
+			</button>
+		  </div>
+		  <div class="modal-body">
+			您准备推荐的信息已复制，您可以到微信/短信中直接黏贴，转发给朋友。
+		  </div>
+		  <div class="modal-footer">
+			<button type="button" class="btn btn-primary" onclick="submit()" data-dismiss="modal">朕知道了</button>
+		  </div>
+		</div>
+	  </div>
+	</div>
+    <script type="text/javascript">
+		var clipboard = new ClipboardJS('.btn-primary');
+		clipboard.on('success', function (e) {
+			$('#messgebox').modal('show');
+		});
+		clipboard.on('error', function (e) {
+			console.log(e);
+		});
+    </script>
 </body></html>

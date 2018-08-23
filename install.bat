@@ -28,3 +28,5 @@ start  "" /b "%exepath%" link nano-time
 start  "" /b "%exepath%" link cache-manager  
 start  "" /b "%exepath%" link cache-manager-fs
 start  "" /b "%exepath%" link uuid
+
+REM #ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123$%^'
