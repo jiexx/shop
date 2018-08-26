@@ -12,39 +12,39 @@
     <script src="./poster/jquery-3.2.1.slim.min.js"></script>
     <script src="./poster/popper.min.js"></script>
     <script src="./poster/bootstrap.min.js"></script>
-	<script src="./poster/clipboard.min.js"></script>
     <link href="./poster/bootstrap.min.css" rel="stylesheet">
+	<link href="./poster/bootstrap-glyphicons.min.css" rel="stylesheet">
     <link href="./poster/agency.min.css" rel="stylesheet">
 
   </head>
 
   <body>
 
-    <!-- Header -->
-    <header class="masthead" style="background-image:url('poster/header-bg.jpg')">
-      <div class="container">
-        <div class="intro-text">
-          <div class="intro-lead-in">完美躺椅</div>
-          <div class="intro-heading">躺着阅读、娱乐、办公</div>
-        </div>
-      </div>
-    </header>
-
     <!-- Services -->
     <section>
       <div class="container">
-        <div>
-          对于顾家的男人来说，梦想可能就是“老婆、孩子、热炕头”；而对于需要每天工作、为事业拼搏的人们来说，最大的梦想无非就是“事儿少、钱多、离家近”。不过事情总没有两全其美，梦想也终归只是梦想……
-        http://www.sohu.com/a/39270612_105527  https://www.zhihu.com/question/39182675
+		<div class="card">
+		  <div class="card-header">
+			订单信息
+		  </div>
+		  <div class="card-body">
+			<h5 class="card-title">你的订单</h5>
+			<p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+		  </div>
 		</div>
-		<input id="info" type="text" value="《LuPS0389cDX《" class="invisible" readonly>
-		
-		<p></p><div><form action="http://localhost:8999/buy"><button type="button" class="btn btn-danger btn-block">购买</button></form></div><p></p>
-        <p></p><div><button data-clipboard-action="copy" data-clipboard-target="#info" type="button" class="btn btn-primary btn-block" >推荐</button></div><p></p>
-        <p><b>推荐规则:</b></p>
-        <div class="small">在'+this.row['EXP']+'期间，发起人推荐给好友成单后，将收到一定数额的红包；</div>
-        <div class="small">例如，小张通过微信/短信等推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</div>
-        <div class="small">如果好友圈再推荐分享，成单了10笔，那么小张将收到50块推荐红包。</div>
+		<br>
+        <form>
+		  <div class="form-group">
+			<h6 class="small">*您的手机号将用于查收订单，务必填写正确</h6>
+			<input type="text" class="form-control" id="formGroupExampleInput" placeholder="手机号码">
+		  </div>
+		  <div class="form-group">
+			<input type="text" class="form-control" id="formGroupExampleInput2" placeholder="登录密码">
+		  </div>
+		  <div class="form-group">
+			<button type="button" class="btn btn-primary btn-block">购买</button>
+		  </div>
+		</form>
       </div>
     </section>
 	<div class="modal fade" id="messgebox" tabindex="-1" role="dialog" >

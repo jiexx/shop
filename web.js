@@ -24,7 +24,7 @@ var Web = /** @class */ (function () {
 				let com = component[m];
 			    if(typeof com === 'function') {
 					console.log(('/'+component.constructor.name + '/' + m.substr(1,m.length)).toLowerCase());
-					this._app.get(('/'+component.constructor.name + '/' + m.substr(1,m.length)).toLowerCase(), function (req, res, next) {
+					this._app.get(('/'+component.constructor.name + '/' + m.substr(1,m.length)).toLowerCase(), passport.authenticate('local'), function (req, res, next) {
 						com.apply(component,[req, res]);
 					});
 				}else if(typeof com == 'object') {
@@ -60,7 +60,10 @@ var Web = /** @class */ (function () {
 		//app.use('/images', express.static(__dirname + '/images'));
 		this._app.use('/', this._express.static(__dirname + '/html'));
 		var multer = require('multer'); // v1.0.5
-		var upload = multer({ dest: 'uploads/' });
+
+		this._app.use(passport.initialize());
+		this._app.use(passport.session());
+
 		var bodyParser = require('body-parser');
 		this._app.use(bodyParser.json());
 		this._app.use(bodyParser.urlencoded({ extended: false }));

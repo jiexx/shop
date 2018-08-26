@@ -4,10 +4,14 @@
 * {
 /* font-size: 0.9rem  !important; */
 }
+html{
+    height:100%;
+}
 
 body {
  background-color: #eee;
  font-family: "Helvetica Neue", Arial, "PingFang SC", "Hiragino Sans GB", "Source Han Sans CN", Roboto, "Microsoft YaHei", sans-serif;
+ height:100%
 }
 /* .table > tbody > tr > td {
     vertical-align: middle;
@@ -22,15 +26,24 @@ body {
     column-count: 2;
   }
 
-[class^="dropdown-menu"],[class*="dropdown-menu"] {
+/* [class^="dropdown-menu"],[class*="dropdown-menu"] {
     left:auto !important;
     top:inherit !important;
-}
+} */
 .ui-select-choices{
     display:block;
 }
 .btn-secondary{
     
+}
+.page {
+    background: url(../img/Flat-Mountains.svg);
+    background-size: cover;
+    /* -webkit-filter: blur(5px);
+  -moz-filter: blur(5px);
+  -o-filter: blur(5px);
+  -ms-filter: blur(5px);
+  filter: blur(5px); */
 }
 
 

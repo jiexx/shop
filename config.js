@@ -10,5 +10,7 @@
  exports.DBPWD = "123$%^";
  exports.DB1 = "shop1";
  exports.DB2 = "shop2";
+ exports.USERDB1 = "customer";
+ exports.USERDB2 = "customer2";
  exports.HOST = "localhost";
  exports.PORT = 8999;

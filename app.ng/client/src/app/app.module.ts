@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
-import { BsDropdownModule,PaginationModule,ModalModule,BsDatepickerModule   } from 'ngx-bootstrap';
+import { BsDropdownModule,PaginationModule,ModalModule,BsDatepickerModule,CollapseModule } from 'ngx-bootstrap';
 import { QuillModule } from 'ngx-quill';
 import { SelectModule } from 'ng2-select';
 import { AppComponent } from './app.component';
@@ -17,6 +17,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { OperatorComponent } from './table/operator.component';
 import { ImageComponent } from './table/image.component';
 import { PosterEditor } from './product/poster.editor';
+import { HomeComponent } from './home/home.component';
+import { LoginComponent } from './login/login.component';
+import { AuthGuard } from './_helper/auth.guard';
 
 
 @NgModule({
@@ -28,7 +31,9 @@ import { PosterEditor } from './product/poster.editor';
     PosterEditor,
     ContentWrapper,
     OperatorComponent,
-    ImageComponent
+    ImageComponent,
+    LoginComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,
@@ -40,6 +45,7 @@ import { PosterEditor } from './product/poster.editor';
     ModalModule.forRoot(),
     QuillModule,
     BsDatepickerModule.forRoot(),
+    CollapseModule.forRoot(),
     SelectModule
   ],
   entryComponents: [ 
@@ -47,7 +53,7 @@ import { PosterEditor } from './product/poster.editor';
     KeeperTable,
     PosterEditor
   ],
-  providers: [BusService],
+  providers: [BusService,AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -16,6 +16,7 @@ export class NavbarComponent implements OnInit {
     navbar: Navbar = new Navbar();
     login: any = {username:'',password:''};
     model: any = {};
+    isCollapsed = true;
 
     public visible = false;
     public visibleAnimate = false;
@@ -31,7 +32,9 @@ export class NavbarComponent implements OnInit {
     }
 
     constructor(
-        private busService: BusService) { }
+        private busService: BusService,
+        private router: Router
+    ) { }
 
     ngOnInit() {
         var i = 1;
@@ -41,5 +44,9 @@ export class NavbarComponent implements OnInit {
 
     onClick(target: Type<any>) {
         this.busService.send(new DclWrapperMessage(this,'ContentWrapper',target,null));
+    }
+
+    onLogout(){
+        this.router.navigate(['/login']);
     }
 }

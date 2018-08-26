@@ -5,6 +5,7 @@ var config = require('../config');
 var Data = /** @class */ (function () {
     function Data() {
         this.$db = new DB(config.DB1, config.DB2);
+        this.userdb = new DB(config.USERDB1, config.USERDB2);
         this.csv = {};
         this.csv['FLOWS'] = new CSV('./app.data/csv/flows.csv');
     };

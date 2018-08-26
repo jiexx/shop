@@ -15,6 +15,8 @@ start  "" /b "%exepath%" install -g nano-time
 start  "" /b "%exepath%" install -g cache-manager  
 start  "" /b "%exepath%" install -g cache-manager-fs
 start  "" /b "%exepath%" install -g uuid
+start  "" /b "%exepath%" install -g passport
+start  "" /b "%exepath%" install -g passport-local
 start  "" /b "%exepath%" link express         
 start  "" /b "%exepath%" link fast-csv         
 start  "" /b "%exepath%" link mysql            
@@ -28,5 +30,7 @@ start  "" /b "%exepath%" link nano-time
 start  "" /b "%exepath%" link cache-manager  
 start  "" /b "%exepath%" link cache-manager-fs
 start  "" /b "%exepath%" link uuid
+start  "" /b "%exepath%" link passport
+start  "" /b "%exepath%" link passport-local
 
 REM #ALTER USER 'root'@'localhost' IDENTIFIED WITH mysql_native_password BY '123$%^'

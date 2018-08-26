@@ -1,31 +1,18 @@
-﻿<nav class="navbar navbar-dark bg-primary navbar-expand">
+﻿<nav class="navbar navbar-expand-lg navbar-dark bg-primary">
   <a class="navbar-brand" href="#">
-    <em class="glyphicon glyphicon-fire text-danger nav-link"></em>管理后台
+    <em class="glyphicon glyphicon-fire text-danger h2"></em>
   </a>
-  <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
     <span class="navbar-toggler-icon"></span>
   </button>
-  <div class="navbar-collapse collapse" id="navbarNavDropdown">
-    <ul class="nav navbar-nav mr-auto">
-      <li class="nav-item" *ngIf="navbar.user">
-        <a href="javascript:void(0)" (click)="onClick('user')">
-          <div class="btn btn-primary text-center" *ngIf="navbar.user.avatar">
-            <img class="avator" src="{{user.avatar}}">
-          </div>
-          <div class="btn btn-primary text-center" *ngIf="!navbar.user.avatar">
-            <em class="glyphicon glyphicon-user "></em>
-          </div>
-        </a>
-      </li>
-      <!-- <li class="nav-item" >
-          <image-upload [width]=100 [height]=100 [scaleWidth]=300 [scaleHeight]=300></image-upload>
-      </li> -->
-      <li class="nav-item" dropdown *ngFor="let menu of navbar.menus; let i = index">
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown" dropdown *ngFor="let menu of navbar.menus; let i = index">
         <div dropdownToggle class="btn btn-primary dropdown-toggle">
           <em class="glyphicon glyphicon-bell"></em>{{menu.name}}
         </div>
-        <ul *dropdownMenu class="dropdown-menu" >
+        <ul *dropdownMenu class="dropdown-menu">
           <li *ngFor="let child of menu.child; let j = index">
             <a class="dropdown-item" href="javascript:void(0)" (click)="onClick(child.target)">
               <span>{{child.name}}</span>
@@ -33,18 +20,11 @@
           </li>
         </ul>
       </li>
-      
     </ul>
-
     <form class="form-inline">
-      <input class="form-control mr-sm-2" type="text" [(ngModel)]="login.username" name="username" placeholder="用户名">
-      <input class="form-control mr-sm-2" type="text" [(ngModel)]="login.password" name="password" placeholder="密码">
-      <button class="btn btn-outline-light" type="submit">登录</button>
+      <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
+      <a class="btn btn-primary"><img src="../../assets/img/logo.jpg" class="rounded-circle img-thumbnail" style="max-width:2rem" ></a>
+      <a class="btn btn-primary" href="javascript:void(0)" (click)="onLogout()"><em class="glyphicon glyphicon-share"></em>注销</a>
     </form>
-    <span class="navbar-text">
-      <a href="javascript:void(0)" class="nav-link">
-        <em class="glyphicon glyphicon-share"></em>
-      </a>
-    </span>
   </div>
 </nav>

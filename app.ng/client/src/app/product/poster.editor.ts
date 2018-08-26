@@ -27,12 +27,12 @@ export class PosterEditor extends EditorComponent{
     };
     logChange($event: any, html: string) {
         var html = $event.html
-            +'<p><button type="button" class="btn btn-danger btn-block">购买</button></p>'
-            +'<p><button type="button" class="btn btn-primary btn-block">推荐</button></p>'
+            +'<div><form action="http://localhost:8999/buy"><button type="button" class="btn btn-danger btn-block">购买</button></form></div>'
+            +'<div><form action="http://localhost:8999/share"><button type="button" class="btn btn-primary btn-block">推荐</button></form></div>'
             +'<p><b>注意事项:</b></p>'
-            +'<p class="small">在'+this.row['EXP']+'期间，发起人推荐分享的海报成单后，将收到一定数额的红包；</p>'
-            +'<p class="small">例如，小张通过微信/微博等社交媒体推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</p>'
-            +'<p class="small">如果好友圈再推荐分享，成单了10笔，那么小张将收到50块红包。</p>'
+            +'<div class="small">在'+this.row['EXP']+'期间，发起人推荐分享的海报成单后，将收到一定数额的红包；</div>'
+            +'<div class="small">例如，小张通过微信/微博等社交媒体推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</div>'
+            +'<div class="small">如果好友圈再推荐分享，成单了10笔，那么小张将收到50块红包。</div>'
         super.logChange($event, html);
         //console.log($event);
     }
