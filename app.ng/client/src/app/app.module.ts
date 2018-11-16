@@ -1,6 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 
@@ -15,11 +15,19 @@ import { KeeperTable } from './keeper/keeper.table';
 import { ContentWrapper } from './table/Content.wrapper';
 import { NavbarComponent } from './navbar/navbar.component';
 import { OperatorComponent } from './table/operator.component';
-import { ImageComponent } from './table/image.component';
+import { DialogComponent } from './_helper/dialog.component';
+import { ImageComponent } from './_helper/image.component';
 import { PosterEditor } from './product/poster.editor';
 import { HomeComponent } from './home/home.component';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './_helper/auth.guard';
+import { JwtInterceptor } from './_helper/jwt.interceptor';
+import { ErrorInterceptor } from './_helper/error.interceptor';
+import { ProfileComponent } from './my/profile.component';
+import { MySettings } from './my/my.settings';
+import { OrderComponent } from './my/order.component';
+import { MyWrapper } from './my/my.wrapper';
+import { ShareComponent } from './my/share.component';
 
 
 @NgModule({
@@ -30,14 +38,21 @@ import { AuthGuard } from './_helper/auth.guard';
     KeeperTable,
     PosterEditor,
     ContentWrapper,
+    MyWrapper,
     OperatorComponent,
     ImageComponent,
+    DialogComponent,
     LoginComponent,
-    HomeComponent
+    HomeComponent,
+    ProfileComponent,
+    MySettings,
+    OrderComponent,
+    ShareComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     PaginationModule.forRoot(),
     routing,
     HttpClientModule,
@@ -51,9 +66,24 @@ import { AuthGuard } from './_helper/auth.guard';
   entryComponents: [ 
     ProductTable,
     KeeperTable,
-    PosterEditor
+    PosterEditor,
+    ProfileComponent,
+    OrderComponent,
+    ShareComponent,
+    MySettings
   ],
-  providers: [BusService,AuthGuard],
+  providers: [BusService,AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: JwtInterceptor,
+      multi: true,
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

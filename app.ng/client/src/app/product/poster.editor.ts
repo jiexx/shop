@@ -9,7 +9,7 @@ export class PosterEditor extends EditorComponent{
     cols: Array<Column> = [
         new Column('ID',        'ID'      , false, 0 ),
         new Column('NO',        'ID'      , true, 0 ),
-        new Column('USERID',    '用户名'   , true, 0 ),
+        new Column('KEEPERID',  '发布用户ID'   , true, 0 ),
         new Column('NAME',      '产品名'   , true, 1, {valid:Column.isnull}),
         new Column('PRICE',     '产品价格' , true, 6, {valid:Column.isnull}),
         new Column('EXP',       '过期时间' , true, 7, {valid:Column.isnull}),
@@ -17,49 +17,43 @@ export class PosterEditor extends EditorComponent{
         new Column('PERSONNUMREQ','活动人数', true, 1, {valid:Column.isnull}),
         new Column('STATE',     '产品状态' , true, 3,{valid:Column.isnull, select:[{id:'上架',text:'上架'},{id:'下架',text:'下架'}]} )
     ];
-    product: any = null;
+    tpl: any = null;
+    posterid: string = null;
     row: any = null;
+    
     ngAfterViewInit(){
-        if(!this.product){
+        if(!this.row){
             this.op.add();
             this.ref.detectChanges();
         }
     };
-    logChange($event: any, html: string) {
-        var html = $event.html
-            +'<div><form action="http://localhost:8999/buy"><button type="button" class="btn btn-danger btn-block">购买</button></form></div>'
-            +'<div><form action="http://localhost:8999/share"><button type="button" class="btn btn-primary btn-block">推荐</button></form></div>'
-            +'<p><b>注意事项:</b></p>'
-            +'<div class="small">在'+this.row['EXP']+'期间，发起人推荐分享的海报成单后，将收到一定数额的红包；</div>'
-            +'<div class="small">例如，小张通过微信/微博等社交媒体推荐给10位好友，有2个朋友觉得不错买单，那么小张将收到20块红包，</div>'
-            +'<div class="small">如果好友圈再推荐分享，成单了10笔，那么小张将收到50块红包。</div>'
-        super.logChange($event, html);
-        //console.log($event);
+    onChange($event: any) {
+        if(this.tpl) {
+            var html = this.tpl.replace(/<!-- HTML -->/g,$event.html)
+            super.onChange({html:html});
+        }
     }
     load(d: any): any {
-        if(!d){
-            return;
-        }
+        if(!this.row) return;
         var that = this;
-        this.http.get('http://localhost:8999/product/item/query/id?version=2&id=&no'+d).subscribe(result => {
+        this.http.post('http://localhost:8999/template/poster', this.row, this.httpOptions).subscribe(result => {
             var r: any = result;
-            if (r && r.item) {
-                that.product = r.item;
-                that.ref.detectChanges();
+            if (r && r.code == 'OK') {
+                that.tpl = r.data;
+                that.onChange({html:''});
+            }else {
+                that.tpl = null;
             }
         });
     };
     save(){
-        if (!this.html) {
+        if (!this.srcdoc) {
             that.op.showMessage('海报还未编辑');
             return;
         }
         var that = this;
-        
-        that.row['USERID'] = '0';
-        that.row['PRODUCTID'] = that.product['ID'];
         var blob = new Blob(
-            [this.html],
+            [this.srcdoc],
             {type : 'html'}
         ); 
         var a = new FileReader();
@@ -71,6 +65,7 @@ export class PosterEditor extends EditorComponent{
                 var r: any = result;
                 if (r && r.newposter.affectedRows == 1) {
                     that.op.showMessage('海报保存成功');
+                    that.row['ID'] = r.newposter.FD.fileIds[0];
                 }
             });
         };
@@ -81,13 +76,14 @@ export class PosterEditor extends EditorComponent{
         var that = this;
         var datePipe = new DatePipe('en-US');
         row['EXP'] = datePipe.transform(row['EXP'][0],'yyyy-MM-dd HH:mm:ss')+','+datePipe.transform(row['EXP'][1],'yyyy-MM-dd HH:mm:ss')
-        row['USERID'] = 0;
+        row['KEEPERID'] = (<any>localStorage.getItem('user')).ID;
         //row['PRICE'] = row['PRICE'].toString();
         this.http.post('http://localhost:8999/product/item/add?version=2', row, this.httpOptions).subscribe(result => {
             var r: any = result;
             if (r && r.newitem.affectedRows == 1) {
                 that.op.showMessage('产品添加成功');
                 that.row = row;
+                that.row['PRODUCTID'] = r.newitem['uuid'];
                 that.load(r.newitem.insertId);
             }
         });

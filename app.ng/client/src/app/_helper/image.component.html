@@ -1,0 +1,15 @@
+﻿<div style="display: table;" [ngStyle]="imgCenter==1 && {'margin-left':'auto','margin-right':'auto'}">
+    <div style="display:table-cell; vertical-align: middle; position: relative;padding-right:10px" *ngFor="let img of images; let i = index ">
+        <img [ngStyle]="{'width.px':width,'height.px':height}" [ngClass]="{'rounded-circle img-thumbnail':imgCircle==1}" [src]="img">
+        <a class="glyphicon glyphicon-remove-sign" [ngStyle]="{ 'color': '#'+rmColor }" style=" position: absolute; font-size:20px; cursor: pointer; top:-4px; right:4px;" 
+            (click)="onClick(i)"></a>
+    </div>
+
+    <div style="display:table-cell;position:relative;margin:5px" [ngStyle]="{'width.px':width,'height.px':height}" *ngIf="images.length<max">
+        <div style=" border:1px dashed #ccc; font-size: 60px; text-align: center; color:#CCC; vertical-align: middle;width:100%;height:100%"
+            [ngStyle]="{'line-height.px':width}">+</div>
+        <canvas #imgcanvas style="position:absolute;top:0;bottom:0;left:0;right:0;width:100%;height:100%"></canvas>
+        <input type="file" style="position:absolute;opacity:0;top:0;bottom:0;left:0;right:0;width:100%;cursor:pointer;" multiple="multiple"
+            #file (change)="onChange(file.files, imgcanvas)" />
+    </div>
+</div>

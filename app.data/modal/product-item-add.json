@@ -1,6 +1,6 @@
 {
     "newitem": {
-        "sql": "INSERT INTO product.item(USERID,NAME,PRICE,STATE,CREATETIME,UPDATETIME,ID)VALUES(?,?,?,?,now(),now(),#i);",
+        "sql": "INSERT INTO product.item(USERID,NAME,PRICE,STATE,CREATETIME,UPDATETIME,ID)VALUES(?,?,?,?,now(),now(),#I);",
         "params": ["USERID", "NAME", "PRICE", "STATE"]
     }
 }

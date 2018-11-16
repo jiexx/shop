@@ -6,7 +6,9 @@
             <div class="card-body" style="min-height: 500px">
                 <span class="card-title text-muted">预览</span>
                 <hr>
-                <p class="card-text" [innerHTML]="html"></p>
+                <div class="w-100 h-100">
+                    <iframe class="w-100" (load)="onIframeload($event)" frameborder="0" scrolling="no"  [srcdoc]="srcdoc"></iframe>
+                </div>
             </div>
         </div>
         <div class="card">
@@ -25,7 +27,7 @@
                 </div>
                 <br>
                 <p class="card-text">
-                    <quill-editor [style]="{'min-height': '300px',height:'auto'}" (onEditorCreated)="setFocus($event)" (onContentChanged)="logChange($event,'');"></quill-editor>
+                    <quill-editor [style]="{'min-height': '300px',height:'auto'}" (onEditorCreated)="onCreate($event)" (onContentChanged)="onChange($event);"></quill-editor>
                 </p>
             </div>
         </div>

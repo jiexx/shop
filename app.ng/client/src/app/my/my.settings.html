@@ -1,0 +1,31 @@
+<section class="p-5">
+        <div class="container">
+            <div class="row">
+                <!-- Customer Sidebar-->
+                <div class="col-xl-3 col-lg-4 mb-md-5">
+                    <div class="card">
+                        <div class="card-header text-center">
+                            <div href="javascript:void(0);" class="d-block pb-2">
+                                <!-- <img [src]="avatar" class="rounded-circle img-thumbnail"> -->
+                                <image-upload [width]=200 [height]=200 [scaleWidth]=300 [scaleHeight]=300 [imgCircle]=1 [imgCenter]=1 [images]="avatar" [rmColor]="color" [onFinish]="onFinish"></image-upload>
+                            </div>
+                            <p *ngIf="nick">{{nick}}</p><p *ngIf="!nick">匿名网友</p>
+                            <!-- <p class="text-muted text-small">Ostrava, Czech republic</p> -->
+                        </div>
+                        <nav class="list-group list-group-flush">
+                            <a href="javascript:void(0);" (click) ="onMenuClick(menu.target)" *ngFor="let menu of my.menus; let i = index" class="list-group-item d-flex justify-content-between align-items-center" >
+                                    <span class="icon icon-bag">{{menu.name}}</span>
+                                <small class="badge badge-pill badge-primary">5</small>
+                            </a>
+                            <a href="customer-login.html" class="list-group-item d-flex justify-content-between align-items-center">
+                                    <span class="fa fa-sign-out" (click)="onLogout()">注销</span>
+                            </a>
+                        </nav>
+                    </div>
+                </div>
+                <div class="col-lg-8 col-xl-9 pl-lg-3">
+                    <my-wrapper></my-wrapper>
+                </div>
+            </div>
+        </div>
+    </section>

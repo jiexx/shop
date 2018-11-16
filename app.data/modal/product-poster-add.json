@@ -1,6 +1,6 @@
 {
     "newposter": {
-        "sql": "INSERT INTO product.poster(USERID,PRODUCTID,TITLE,PERSONNUMREQ,STATE,EXP,CREATETIME,UPDATETIME,ID)VALUES(?,?,?,?,?,?,now(),now(),#i);",
+        "sql": "INSERT INTO product.poster(KEEPERID,PRODUCTID,TITLE,PERSONNUMREQ,STATE,EXP,CREATETIME,UPDATETIME,ID)VALUES(?,?,?,?,?,?,now(),now(),#I);",
         "params": ["USERID", "PRODUCTID", "TITLE", "PERSONNUMREQ", "待成单", "EXP"],
         "FD": {"sql": "UPDATE product.poster SET fd=? WHERE no = ?;",	"params":["HTML","insertId"], "files":["HTML"], "findkey": "insertId"}
     }

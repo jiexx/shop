@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="description" content="">
+	<meta name="author" content="">
+
+	<title>51推</title>
+
+	<script src="<%= DOMAIN%>/jquery-3.2.1.slim.min.js"></script>
+	<script src="<%= DOMAIN%>/helper.js"></script>
+	<link href="<%= DOMAIN%>/bootstrap.min.css" rel="stylesheet">
+	<link href="<%= DOMAIN%>/agency.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+
+	<!-- Services -->
+	<section>
+		<div class="container">
+			<div class="card">
+				<div class="card-header">
+					订单信息
+				</div>
+				<div class="card-body">
+					<h5 class="card-title">你的订单</h5>
+					<p class="card-text">价格:
+						<%= AMOUNT %>
+					</p>
+					<p class="card-text">名称:
+						<%= NAME %>
+							<%= TITLE %>
+					</p>
+					<p class="card-text">状态:
+						<%= STATE %> 
+					</p>
+					<p class="card-text">创建时间:
+							<%= CREATETIME %>
+						</p>
+				</div>
+			</div>
+			<br>
+			<form>
+				<input type="text" class="form-control d-none" name="NAME" value="<%= NAME %>">
+				<input type="text" class="form-control d-none" name="TITLE" value="<%= TITLE %>">
+				<input type="text" class="form-control d-none" name="PRICE" value="<%= AMOUNT %>">
+				<input type="text" class="form-control d-none" name="ORDERID" value="<%= ORDERID %>">
+				<input type="text" class="form-control d-none" name="ORDERID" value="<%= PRODUCTID %>">
+				<input type="text" class="form-control d-none" name="POSTERID" value="<%= POSTERID %>">
+				<input type="text" class="form-control d-none" name="CUSTOMERID" value="<%= CUSTOMERID %>">
+				<input type="text" class="form-control d-none" name="KEEPERID" value="<%= KEEPERID %>">
+				<input type="text" class="form-control d-none" name="CREATETIME" value="<%= CREATETIME %>">
+				<div class="form-group">
+					<button type="submit" class="btn btn-primary btn-block">支付</button>
+				</div>
+			</form>
+		</div>
+	</section>
+	<script type="text/javascript">
+		var helper = new Helper("<%= DOMAIN%>", "<%= PRODUCTID %>");
+		$('form').submit(function () {
+			var data = $(this).serialize();
+			helper.pay(data);
+			return false;
+		});
+	</script>
+</body>
+
+</html>

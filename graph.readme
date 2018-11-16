@@ -1,0 +1,29 @@
+1.http://mirrors.shu.edu.cn/apache/hadoop/common/stable/hadoop-2.9.1.tar.gz
+2.https://github-production-release-asset-2e65be.s3.amazonaws.com/77385607/08e0eeac-94d4-11e8-9e0c-e650a63d6ba3?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4CSVEH53A%2F20180910%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20180910T123928Z&X-Amz-Expires=300&X-Amz-Signature=1cbed764b0afe8947a05a09e5514af8de8094f0a0f9435075b9e5e7569ea3088&X-Amz-SignedHeaders=host&actor_id=10933852&response-content-disposition=attachment%3B%20filename%3Djanusgraph-0.3.0-hadoop2.zip&response-content-type=application%2Foctet-stream
+3.http://mirrors.hust.edu.cn/apache/hbase/1.4.7/hbase-1.4.7-bin.tar.gz
+4.http://public-repo-1.hortonworks.com/hdp-win-alpha/winutils.exe
+set JAVA_HOME="C:\Program Files\Java\jdk1.8.0_91"
+set CLASSPATH="%JAVA_HOME%\lib;"
+set HADOOP_HOME="C:\hadoop-2.9.1"
+set PATH="%PATH%;%HADOOP_HOME%\bin"
+copy winutils.exe C:\hadoop-2.9.1\bin
+copy winutils.ext C:\janusgraph-0.3.0-hadoop2\bin
+echo "set HBASE_MANAGES_ZK=false"                      >> C:\hbase-1.4.7\conf\hbase-env.cmd
+echo "set JAVA_HOME=C:\Program Files\Java\jre1.8.0_91" >> C:\hbase-1.4.7\conf\hbase-env.cmd
+echo "set HBASE_CLASSPATH=C:\hbase-1.4.7\lib"          >> C:\hbase-1.4.7\conf\hbase-env.cmd
+
+#https://docs.janusgraph.org/latest/server.html
+change C:\janusgraph-0.3.0-hadoop2\conf\gremlin-server.yaml
+change C:\janusgraph-0.3.0-hadoop2\conf\gremlin-server\gremlin-server.yaml
+graphs: {
+  #graph: conf/gremlin-server/janusgraph-cql-es-server.properties
+  graph: conf/gremlin-server/janusgraph-hbase.properties
+}
+
+C:\hbase-1.4.7\bin\start-hbase.cmd
+C:\janusgraph-0.3.0-hadoop2\bin\gremlin-server.bat
+C:\janusgraph-0.3.0-hadoop2\bin\gremlin.bat
+gremlin> :remote connect tinkerpop.server conf/remote.yaml
+==>Connected - localhost/127.0.0.1:8182
+gremlin> :> graph.addVertex("name", "stephen")
+gremlin> :> g.V().values('name')

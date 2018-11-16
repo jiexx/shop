@@ -2,12 +2,14 @@ import { ProductTable } from "../product/product.table";
 import { KeeperTable } from "../keeper/keeper.table";
 import { EditorComponent } from '../editor/editor.component';
 import { PosterEditor } from "../product/poster.editor";
+import { ProfileComponent } from "../my/profile.component";
+import { MySettings } from "../my/my.settings";
 
 export class Navbar {
     public user;
     public menus;
     constructor() {
-        this.user = {name:'',token:'',avatar:''};
+        this.user = {name:'',token:'',avatar:'',my:MySettings};
         this.menus = [
             {
                 name:'我的',

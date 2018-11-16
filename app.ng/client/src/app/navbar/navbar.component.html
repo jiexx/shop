@@ -14,7 +14,7 @@
         </div>
         <ul *dropdownMenu class="dropdown-menu">
           <li *ngFor="let child of menu.child; let j = index">
-            <a class="dropdown-item" href="javascript:void(0)" (click)="onClick(child.target)">
+            <a class="dropdown-item" href="javascript:void(0)" (click)="onMenuClick(child.target)">
               <span>{{child.name}}</span>
             </a>
           </li>
@@ -23,7 +23,7 @@
     </ul>
     <form class="form-inline">
       <!-- <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"> -->
-      <a class="btn btn-primary"><img src="../../assets/img/logo.jpg" class="rounded-circle img-thumbnail" style="max-width:2rem" ></a>
+      <a class="btn btn-primary"><img src="../../assets/img/logo.jpg" class="rounded-circle img-thumbnail" style="max-width:2rem" (click)="onMenuClick(navbar.user.my)"></a>
       <a class="btn btn-primary" href="javascript:void(0)" (click)="onLogout()"><em class="glyphicon glyphicon-share"></em>注销</a>
     </form>
   </div>

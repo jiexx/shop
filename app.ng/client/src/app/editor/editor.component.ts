@@ -3,6 +3,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { DclComponent } from '../_helper/dcl.component';
 import { OperatorComponent } from '../table/operator.component';
 import * as QuillNamespace from 'quill';
+import { DomSanitizer } from '@angular/platform-browser';
+
 const Quill: any = QuillNamespace;
 const BlockEmbed = Quill.import('blots/block/embed');
 class CustomEmbed extends BlockEmbed {
@@ -36,7 +38,7 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
     @ViewChild(OperatorComponent) op: OperatorComponent;
 
   
-    html:any = null;
+    srcdoc: any = '';
     that:any = this;
     
     _editorInstance: any = null;
@@ -48,13 +50,17 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
     constructor(
         protected http: HttpClient,
         protected ref: ChangeDetectorRef,
-        private elRef:ElementRef
+        private elRef:ElementRef,
+        protected sanitizer: DomSanitizer
         )
     {}
     ngOnInit() {
     }
     ngAfterViewInit(){
-        
+    }
+    onIframeload(ev: Event){
+        var e = <HTMLFrameElement>ev.srcElement;
+        e.height=  e.contentWindow.document.body.scrollHeight;
     }
     selectLocalImage(that: any) {
         var input = document.querySelector('input[type=file]') as HTMLInputElement;
@@ -85,7 +91,7 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
         const range = this._editorInstance.getSelection();
         this._editorInstance.insertEmbed(range.index, "custom-embed", "<img src='"+url+"' class='img-fluid'>");
     }
-    setFocus(editorInstance) {
+    onCreate(editorInstance) {
         editorInstance.focus();
         let toolbar = editorInstance.getModule('toolbar');
         toolbar.addHandler('image', () => {
@@ -93,13 +99,14 @@ export class EditorComponent implements OnInit,AfterViewInit, DclComponent  {
           });
         this._editorInstance = editorInstance;
     }
-    logChange($event: any, html:string) {
-        this.html = html != '' ? html : $event.html
+    onChange($event: any) {
+        this.srcdoc = this.sanitizer.bypassSecurityTrustHtml($event.html);
+        this.ref.detectChanges();
         //console.log($event);
     }
     saveToServer(base64){
         return new Promise((resolve, reject) =>{
-            var data = {pic:base64.replace(/data:([A-Za-z-+\/]+);base64,/gi, "data:htmlimg;base64,")};
+            var data = {pic:base64.replace(/data:([A-Za-z-+\/]+);base64,/gi, "data:text/html;base64,")};
             this.http.post('http://localhost:9900/upload', data, this.httpOptions)
                 .subscribe(result => {
                     var r: any = result;

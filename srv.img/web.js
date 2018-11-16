@@ -10,63 +10,60 @@ const sharp = require('sharp');
 var config = require('../config');
 var day = require('../lib/day');
 var base64 = require('../lib/base64');
-const uuidv4 = require('uuid/v4');
+var file = require('../lib/file');
+//const uuidv4 = require('uuid/v4');
 var mkdirp = require('mkdirp');
+
+
+const gremlin = require('gremlin');
+const Graph = gremlin.structure.Graph;
+const DriverRemoteConnection = gremlin.driver.DriverRemoteConnection;
+const graph = new Graph();
+const g = graph.traversal().withRemote(new DriverRemoteConnection(config.GDB));
+const __ = gremlin.process.statics;
 
 app.use(compression());
 app.use(bodyParser.json({limit: '50mb'})); // for parsing application/json
 app.use(bodyParser.urlencoded({limit: '50mb', extended: true })); // for parsing application/x-www-form-urlencoded
-app.use('/lib', express.static(__dirname + '/lib'));
+app.use('/poster', express.static(__dirname + '/poster'));
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     next();
 });
 
 app.post('/upload', upload.array(), function (req, res) {
-    var data = req.body;
-    var imageBuffer = base64.decode(data.pic);
-    var fd = uuidv4();
-    if(!config.HOST_DIR[String(imageBuffer.type)]) {
-        fs.writeFile(config.IMG_HOST_DIR+'/'+fd, imageBuffer.data, function(err,written){
-            if(!err){
-                res.json({ code: 'OK', msg: fd, data: null });
-                console.log(day.full(), 'OK upload', fd);
-            }else {
-                res.json({ code: 'ERR', msg: '写失败', data: null });
-                console.log(day.full(), err);
-            }
-        });
-    }else {
-        fs.writeFile(config.HOST_DIR[String(imageBuffer.type)]+'/'+fd, imageBuffer.data, function(err,written){
-            if(!err){
-                res.json({ code: 'OK', msg: fd+'?type='+imageBuffer.type, data: null });
-                console.log(day.full(), 'OK upload', fd);
-            }else {
-                res.json({ code: 'ERR', msg: '写失败', data: null });
-                console.log(day.full(), err);
-            }
-        });
-    }
     
+    var imageBuffer = base64.decode(req.body.pic);
+    var desc = file.makeFileDesc(imageBuffer.type);
 
+    fs.writeFile(desc.path, imageBuffer.data, function(err,written){
+        if(!err){
+            res.json({ code: 'OK', msg: desc.fd, data: null });
+            console.log(day.full(), 'OK upload', desc.fd);
+        }else {
+            res.json({ code: 'ERR', msg: '写失败', data: null });
+            console.log(day.full(), err);
+        }
+    });
 });
 
-app.get('/:img', upload.array(), function (req, res) {
-
-    if(!req.query.type || req.query.type == 'htmlimg') {
-        var img = req.query.type == 'htmlimg' ?  config.HOST_DIR[String(req.query.type)]+'/'+req.params.img : config.IMG_HOST_DIR+'/'+req.params.img;
-        if(!fs.existsSync(img)){
-            var matches = img.match(/^([^_]+)_([^x]+)x(.+)$/);
+app.get(/^\/([^\/]+).*/, upload.array(), async function (req, res) {
+    var fd = req.params[0];
+    //var token = req.params.token;
+    var desc = file.extractFileDesc(fd);
+    if(desc.type.indexOf('image') > -1){
+        if(!fs.existsSync(desc.path)){
+            var matches = fd.match(/^([^_]+)_([^x]+)x(.+)$/);
             if (!matches || matches.length !== 4 || !fs.existsSync(matches[1])) {
                 res.json({ code: 'ERR', msg: '文件不存在', data: null });
             }else {
                 var w = parseInt(matches[2]), h = parseInt(matches[3]);
                 sharp(matches[1]).resize(w, h)
-                .toFile(img, (err, info) => {
+                .toFile(desc.path, (err, info) => {
                     if(!err){
                         res.header("Content-Type", "image/gif");
-                        res.sendFile(img,{ root: __dirname });
+                        res.sendFile(desc.path,{ root: __dirname });
                     }else{
                         res.json({ code: 'ERR', msg: '文件不存在', data: null });
                     }
@@ -74,27 +71,43 @@ app.get('/:img', upload.array(), function (req, res) {
             }
         }else{
             res.header("Content-Type", "image/gif");
-            res.sendFile(img,{ root: __dirname });
+            res.sendFile(desc.path,{ root: __dirname });
         }
-    }else{
-        var file = config.HOST_DIR[String(req.query.type)]+'/'+req.params.img;
-        if(!fs.existsSync(file)){
+    }else if(desc.type.indexOf('text') > -1){
+        if(!fs.existsSync(desc.path)){
             res.json({ code: 'ERR', msg: '文件不存在', data: null });
         }else{
             res.header('Content-Type', 'text/html');
-            res.sendFile(file,{ root: __dirname });
+            res.sendFile(desc.path,{ root: __dirname });
+        }
+    }else if(desc.type.indexOf('share') > -1){
+        try {
+            var result = await g.E().hasLabel(fd).inV().repeat(__.in_()).until(__.has('posterid')).values('posterid').next();
+            if(result && result.value){
+                desc = file.extractFileDesc(result.value);
+                if(!fs.existsSync(desc.path)){
+                    res.json({ code: 'ERR', msg: '文件不存在', data: null });
+                }else{
+                    res.header('Content-Type', 'text/html');
+                    res.sendFile(desc.path,{ root: __dirname });
+                }
+            }else {
+                res.json({ code: 'ERR', msg: 'shareid', data: null });
+            }
+        } catch (error) {
+            // Runs if user.profile() rejects
+            return res.status(500, {error})
         }
     }
     
 });
 
 
-var server = app.listen(config.IMG_HOST_PORT, function() {
-	mkdirp(config.IMG_HOST_DIR, function(err) { 
-        console.log(day.full(),' DIR ERR', err);
-    });
-    for(var i in config.HOST_DIR) {
-        mkdirp(config.HOST_DIR[i], function(err) { 
+var server = app.listen(config.MEDIA_HOST.PORT, function() {
+    var dirs = config.MEDIA_HOST.DIRS;
+    for(var key in dirs) {
+        var dir = dirs[key];
+        mkdirp(dir.PATH, function(err) { 
             console.log(day.full(),' DIR ERR', err);
         });
     }

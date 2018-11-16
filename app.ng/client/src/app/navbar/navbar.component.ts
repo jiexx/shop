@@ -5,6 +5,9 @@ import { BusService } from '../_service/bus.service';
 import { Navbar } from './navbar';
 import { DclWrapperMessage } from '../_service/dclwrapper.message'
 import { ProductTable } from '../product/product.table'
+import { AuthMessage } from '../_service/auth.message';
+import { AuthGuard } from '../_helper/auth.guard';
+import { ContentWrapper } from '../table/Content.wrapper';
 
 @Component({
     selector: 'navbar-wrapper',
@@ -42,11 +45,11 @@ export class NavbarComponent implements OnInit {
         //this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
     }
 
-    onClick(target: Type<any>) {
-        this.busService.send(new DclWrapperMessage(this,'ContentWrapper',target,null));
+    onMenuClick(target: Type<any>) {
+        this.busService.send(new DclWrapperMessage(this, ContentWrapper,target,null));
     }
 
     onLogout(){
-        this.router.navigate(['/login']);
+        this.busService.send(new AuthMessage(this, AuthGuard, 'logout', {}));
     }
 }

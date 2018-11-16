@@ -1,0 +1,3 @@
+{
+    "item": { "sql": "select a.NAME,a.PRICE,a.STATE,b.TITLE,b.EXP,b.KEEPERID from PRODUCT.ITEM  a left join PRODUCT.POSTER b on b.PRODUCTID = a.ID and b.ID = ?;", "params": ["ID"] }
+}

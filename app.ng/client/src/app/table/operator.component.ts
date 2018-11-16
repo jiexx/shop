@@ -2,7 +2,7 @@
 import { ModalDirective } from 'ngx-bootstrap/modal';
 import { Column } from './column';
 import { md5 } from '../_helper/md5';
-import { ImageComponent } from './image.component';
+import { ImageComponent } from '../_helper/image.component';
 
 @Component({
     selector: 'operator',

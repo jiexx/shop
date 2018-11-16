@@ -16,50 +16,47 @@
                 <!-- Form Panel    -->
                 <div class="col-lg-6 bg-white d-flex justify-content-center ">
                     <div class="align-self-center">
-                        <form method="post" class=" p-5" (ngSubmit)="onLogin()" *ngIf="!forget">
-                            <div class="form-group">
-                                <input type="text" placeholder="用户名/手机" class="form-control" [ngClass]="{ 'text-danger': submitted && f.username.errors }">
-                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                                    <div *ngIf="f.username.errors.required">Username is required</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <input type="password" placeholder="密码" class="form-control" [ngClass]="{ 'text-danger': 'submitted && f.password.errors' }">
-                                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                    <div *ngIf="f.password.errors.required">Password is required</div>
-                                </div>
-                            </div>
-                            <div class="form-group">
-                                <button [disabled]="loading" class="btn btn-primary">登录</button>
-                            </div>
-                            <!-- This should be submit button but I replaced it with <a> for demo purposes-->
-                            <small>
-                                <a href="javascript:void(0);" class="forgot-pass" (click)="forget = !forget">忘记密码?</a>
-                            </small>
-                        </form>
-                        <form method="post" class="pt-5 pb-5" (ngSubmit)="onForget()" *ngIf="forget">
+                        <form method="post" class="pt-5 pb-5" [formGroup]="loginForm" *ngIf="fcase == 2">
                             <br><br>
-                            <div class="input-group pb-5" *ngIf="!captcha">
-                                <input type="text" placeholder="手机" class="form-control" [ngClass]="{ 'text-danger': 'submitted && f.password.errors' }">
+                            <div class="input-group">
+                                <input type="text" formControlName="username" placeholder="手机号" class="form-control" [ngClass]="{'is-invalid':f.username.errors}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" (click)="captcha = !captcha">发送验证码</button>
-                                </div>
-                                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
-                                    <div *ngIf="f.username.errors.required">Username is required</div>
+                                    <button class="btn btn-primary" type="button" (click)="onCheckin()">快速登录</button>
                                 </div>
                             </div>
-                            <div class="input-group pb-5" *ngIf="captcha">
-                                <input type="password" placeholder="输入验证码" class="form-control" [ngClass]="{ 'text-danger': 'submitted && f.password.errors' }">
+                            <span *ngIf="f.username.errors" class="small text-danger">{{f.username.errors}}</span>
+                            <div class="pt-5 small">
+                                <a href="javascript:void(0);" class="forgot-pass" (click)="fcase = 3">没有账号? 注册</a>
+                            </div>
+                        </form>
+                        <form method="post" class="pt-5 pb-5" [formGroup]="loginForm" *ngIf="fcase == 3">
+                            <br><br>
+                            <div class="input-group">
+                                <input type="text" formControlName="username" placeholder="手机号" class="form-control" [ngClass]="{'is-invalid':f.username.errors}">
                                 <div class="input-group-append">
-                                    <button class="btn btn-primary" type="button" (click)="captcha = !captcha">确认验证码</button>
-                                </div>
-                                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
-                                    <div *ngIf="f.password.errors.required">Password is required</div>
+                                    <button class="btn btn-primary" type="button" (click)="onRegister()">发送验证码</button>
                                 </div>
                             </div>
-                            <small>
-                                <a href="javascript:void(0);" class="forgot-pass" (click)="forget = !forget">已有密码?</a>
-                            </small>
+                            <span *ngIf="f.username.errors" class="small text-danger">{{f.username.errors}}</span>
+                            <div class="pt-5 small">
+                                <a href="javascript:void(0);" class="forgot-pass" (click)="fcase = 2">已有账号? 登录</a>
+                            </div>
+                        </form>
+                        <form method="post" class="pt-5 pb-5" [formGroup]="loginForm" *ngIf="fcase == 5">
+                            <br><br>
+                            <div class="input-group">
+                                <input type="password" formControlName="password" placeholder="输入验证码" class="form-control" [ngClass]="{'is-invalid':f.password.errors}">
+                                <div class="input-group-append">
+                                    <button class="btn btn-primary" type="button" (click)="onLogin()">确认验证码</button>
+                                </div>
+                            </div>
+                            <span *ngIf="f.password.errors" class="small text-danger">{{f.password.errors}}</span>
+                            <div>
+                                <img [src]="captcha" >
+                            </div>
+                            <div class="pt-5 small">
+                                <a href="javascript:void(0);" class="forgot-pass" (click)="fcase = 2">已有账号? 登录</a>
+                            </div>
                         </form>
                     </div>
                 </div>

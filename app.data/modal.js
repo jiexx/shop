@@ -5,13 +5,14 @@ var FdfsClient = require('fdfs');
 var request = require('request');
 const uuidv4 = require('uuid/v4');
 var base64 = require('../lib/base64');
+var shortid = require('shortid');
 
 var fdfs = new FdfsClient({
     // tracker servers
     trackers: [{
-        host: config.IMG_HOST,
+        host: config.MEDIA_HOST.FDFS,
         // host: '101.37.22.3',//'172.16.36.1',//'10.101.1.165',//'123.59.144.47','10.101.1.165'
-        port: config.IMG_HOST_PORT
+        port: config.MEDIA_HOST.FDFS_PORT
     }],
     timeout: 10000,
     //defaultExt: 'txt',
@@ -35,7 +36,7 @@ var pool = mysql.createPool({
             } else if (txt == 'n?') {
                 return values[i++];
             }else if (txt == '#i') {
-                return "\'" + uuidv4() + "\'";
+                return "\'" + shortid.generate() + "\'";
             }
             return txt;
         });
@@ -52,8 +53,19 @@ function doSql(funcArgu, onFinish) {
             onFinish(true);
             return;
         }
-        console.log("doSql: " + funcArgu.sql + "   " + JSON.stringify(funcArgu.params));
-        conn.query(funcArgu.sql, funcArgu.params, function(err, results) {
+        let uuid = null;
+        let q = funcArgu.sql.replace(/#i|#I/g, function(txt, key) {
+            if (txt == '#i') {
+                uuid = shortid.generate();
+                return "\'" + uuid + "\'";
+            }else if(txt == '#I') {
+                uuid = uuidv4();
+                return "\'" + uuid + "\'";
+            }
+            return txt;
+        });
+        console.log("doSql: " + q + "   " + JSON.stringify(funcArgu.params));
+        conn.query(q, funcArgu.params, function(err, results) {
             conn.release(); // always put connection back in pool after last query
             //////console.log(JSON.stringify(results));
             if (err) {
@@ -65,6 +77,18 @@ function doSql(funcArgu, onFinish) {
                 return;
             }
             if (onFinish) {
+                if(uuid && "object" == typeof results && Array != results.constructor) {
+                    results['uuid'] = uuid;
+                }else if(uuid && "object" == typeof results && Array == results.constructor) {
+                    for(var i in results){
+                        if(uuid && "object" == typeof results[i] && Array != results[i].constructor) {
+                            results[i]['uuid'] = uuid;
+                        }
+                    }
+                }
+                if(funcArgu.item && funcArgu.item.modal && funcArgu.item.modal.files && funcArgu.item.modal.files.length > 0){
+                    results['fileIds'] = funcArgu.item.modal.files;
+                }
                 onFinish(false, results);
             }
         });
@@ -76,7 +100,7 @@ var uploadImage = function uploadImage(funcArgu, onFinish) {
         onFinish('');
         return;
     }
-    if(config.IMG_HOST_FDFS){
+    if(config.MEDIA_HOST.FDFS_ENABLED){
         var pic = base64.decode(funcArgu.base64);
         fdfs.upload(pic.data, { ext: 'jpg' }).then(function(fileId) {
             //console.log(fileId);
@@ -88,13 +112,13 @@ var uploadImage = function uploadImage(funcArgu, onFinish) {
         });
     }else {
         request.post({
-            url: config.IMG_URL+'upload',
+            url: config.MEDIA_HOST.URL+'upload',
             method: "POST",
             json: {pic:funcArgu.base64}
         }, function (error, response, body) {
             if (!error && response.statusCode == 200) {
                 if (body.code == 'OK' && onFinish) {
-                    onFinish(config.IMG_URL+body.msg);
+                    onFinish(body.msg);
                 }else {
                     console.log(day.full(),body);
                 }
@@ -468,6 +492,7 @@ var roger = {
                     }
                     for (var i in fas) {
                         p[fas[i].row][fas[i].index] = fas[i].fileid;
+                        tags[i] = fas[i].fileid;
                     }
                     p = null;
                     this.clear();

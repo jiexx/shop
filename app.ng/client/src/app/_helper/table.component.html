@@ -1,0 +1,39 @@
+﻿
+<div class="card">
+    <div class="card-header">
+        <button type="button" class="btn btn-primary float-right" (click)="append()">添加</button>
+    </div>
+    <div class="card-body">
+        <table class="table table-hover">
+            <thead>
+                <tr>
+                    <th scope="col" *ngFor="let col of tabCols | visiable">{{col.alias}}</th>
+                    <th scope="col">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let row of tabData | visiable : tabCols; let j = index">
+                    <!-- <ng-container *ngFor="let cell of row | keyvalue; let i = index"> -->
+                    <ng-container *ngFor="let col of cols">
+                        <td *ngIf="col.visible && col.type != 5" class="text-truncate">{{row[col.name]}}</td>
+                        <td *ngIf="col.type == 5"><img [src]="row[col.name]+col.options.size" class="rounded-circle"></td>
+                    </ng-container>
+                    <td class="btn-group">
+                        <button class="btn btn-link" (click)="op.delete(row)">
+                            <span class="glyphicon glyphicon-remove"></span>
+                        </button>
+                        <button class="btn btn-link" (click)="op.update(row)">
+                            <span class="glyphicon glyphicon-wrench"></span>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <pagination (pageChanged)="pageChanged($event)" [totalItems]="total" [itemsPerPage]="numPerPg" [(ngModel)]="page" [maxSize]="maxSize"
+            [boundaryLinks]="true" previousText="&lsaquo;" nextText="&rsaquo;" firstText="&laquo;" lastText="&raquo;"></pagination>
+    </div>
+</div>
+
+<table-action [cols]="cols" ></table-action>
+
+<img *ngIf="loading" src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA=="/>
